@@ -1,0 +1,682 @@
+/* ═══════════════════════════════════════════════════
+   StudyOS — styles.css  (JavaFX CSS)
+   Coloque este arquivo na mesma pasta do Dashboard.fxml
+   ═══════════════════════════════════════════════════ */
+
+/* ── VARIÁVEIS (usando looks) ──────────────────────── */
+/* JavaFX não tem var(), então usamos valores diretos  */
+
+/* ── ROOT ─────────────────────────────────────────── */
+.root-pane {
+    -fx-background-color: #0d0f14;
+}
+
+/* ── SIDEBAR ─────────────────────────────────────── */
+.sidebar {
+    -fx-background-color: #13161e;
+    -fx-border-color: rgba(255,255,255,0.06);
+    -fx-border-width: 0 1 0 0;
+    -fx-padding: 0;
+}
+
+.logo-area {
+    -fx-padding: 20 16 16 16;
+    -fx-border-color: rgba(255,255,255,0.06);
+    -fx-border-width: 0 0 1 0;
+    -fx-spacing: 3;
+}
+
+.logo-text {
+    -fx-font-size: 22px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #e8eaf0;
+    -fx-font-family: "Georgia";
+    -fx-font-style: italic;
+}
+
+.logo-accent {
+    -fx-font-size: 22px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #4f9cf9;
+    -fx-font-family: "Georgia";
+    -fx-font-style: italic;
+}
+
+.logo-sub {
+    -fx-font-size: 10px;
+    -fx-text-fill: #6b7280;
+    -fx-font-family: "Courier New";
+}
+
+/* ── NAV ─────────────────────────────────────────── */
+.nav-section {
+    -fx-padding: 12 8 8 8;
+    -fx-spacing: 2;
+}
+
+.nav-label {
+    -fx-font-size: 10px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #6b7280;
+    -fx-padding: 6 8 4 8;
+}
+
+.nav-item {
+    -fx-padding: 8 10 8 10;
+    -fx-background-radius: 8;
+    -fx-cursor: hand;
+    -fx-spacing: 10;
+    -fx-alignment: CENTER_LEFT;
+    -fx-min-height: 36;
+}
+
+.nav-item:hover {
+    -fx-background-color: #1a1e2a;
+}
+
+.nav-item .nav-icon {
+    -fx-font-size: 15px;
+    -fx-min-width: 20;
+    -fx-alignment: CENTER;
+    -fx-text-fill: #9ca3af;
+}
+
+.nav-item .nav-text {
+    -fx-font-size: 13.5px;
+    -fx-text-fill: #9ca3af;
+}
+
+.nav-item:hover .nav-text,
+.nav-item:hover .nav-icon {
+    -fx-text-fill: #e8eaf0;
+}
+
+.nav-active {
+    -fx-background-color: rgba(79, 156, 249, 0.12);
+}
+
+.nav-active .nav-text,
+.nav-active .nav-icon {
+    -fx-text-fill: #4f9cf9;
+}
+
+/* ── BADGES ──────────────────────────────────────── */
+.badge {
+    -fx-font-size: 10px;
+    -fx-font-weight: bold;
+    -fx-padding: 2 7 2 7;
+    -fx-background-radius: 999;
+}
+
+.badge-blue {
+    -fx-background-color: #4f9cf9;
+    -fx-text-fill: white;
+}
+
+.badge-warn {
+    -fx-background-color: #ffd93d;
+    -fx-text-fill: #000000;
+}
+
+.badge-green {
+    -fx-background-color: #38d9a9;
+    -fx-text-fill: #000000;
+}
+
+/* ── SUBJECT ITEMS ───────────────────────────────── */
+.subject-item {
+    -fx-padding: 7 10 7 10;
+    -fx-cursor: hand;
+    -fx-background-radius: 8;
+    -fx-min-height: 32;
+}
+
+.subject-item:hover {
+    -fx-background-color: #1a1e2a;
+}
+
+.subject-name {
+    -fx-font-size: 13px;
+    -fx-text-fill: #9ca3af;
+}
+
+.subject-item:hover .subject-name {
+    -fx-text-fill: #e8eaf0;
+}
+
+.subject-pct {
+    -fx-font-size: 11px;
+    -fx-text-fill: #6b7280;
+    -fx-font-family: "Courier New";
+}
+
+.add-subject-link {
+    -fx-font-size: 12px;
+    -fx-text-fill: #4f9cf9;
+    -fx-cursor: hand;
+    -fx-padding: 6 10 6 10;
+}
+
+/* ── SIDEBAR FOOTER ──────────────────────────────── */
+.sidebar-footer {
+    -fx-padding: 12 8 12 8;
+    -fx-border-color: rgba(255,255,255,0.06);
+    -fx-border-width: 1 0 0 0;
+    -fx-cursor: hand;
+    -fx-background-radius: 8;
+}
+
+.user-avatar {
+    -fx-background-color: linear-gradient(from 0% 0% to 100% 100%, #4f9cf9, #f093fb);
+    -fx-background-radius: 50%;
+    -fx-min-width: 32;
+    -fx-min-height: 32;
+    -fx-max-width: 32;
+    -fx-max-height: 32;
+}
+
+.user-avatar-letter {
+    -fx-font-size: 13px;
+    -fx-font-weight: bold;
+    -fx-text-fill: white;
+}
+
+.user-name {
+    -fx-font-size: 13px;
+    -fx-text-fill: #e8eaf0;
+}
+
+.user-role {
+    -fx-font-size: 11px;
+    -fx-text-fill: #6b7280;
+}
+
+.settings-icon {
+    -fx-font-size: 16px;
+    -fx-text-fill: #6b7280;
+    -fx-cursor: hand;
+    -fx-padding: 0 4 0 0;
+}
+
+/* ── TOPBAR ──────────────────────────────────────── */
+.topbar {
+    -fx-background-color: #13161e;
+    -fx-border-color: rgba(255,255,255,0.06);
+    -fx-border-width: 0 0 1 0;
+    -fx-padding: 0 20 0 20;
+    -fx-min-height: 52;
+    -fx-max-height: 52;
+    -fx-spacing: 12;
+}
+
+.page-title {
+    -fx-font-size: 18px;
+    -fx-text-fill: #e8eaf0;
+    -fx-font-family: "Georgia";
+    -fx-font-style: italic;
+}
+
+/* ── TABS ─────────────────────────────────────────── */
+.tab-bar {
+    -fx-spacing: 4;
+    -fx-alignment: CENTER_LEFT;
+}
+
+.tab {
+    -fx-font-size: 13px;
+    -fx-text-fill: #9ca3af;
+    -fx-padding: 5 14 5 14;
+    -fx-background-radius: 6;
+    -fx-cursor: hand;
+}
+
+.tab:hover {
+    -fx-background-color: #1a1e2a;
+    -fx-text-fill: #e8eaf0;
+}
+
+.tab-active {
+    -fx-background-color: #222736;
+    -fx-text-fill: #e8eaf0;
+    -fx-font-weight: bold;
+}
+
+/* ── BUTTONS ─────────────────────────────────────── */
+.btn-primary {
+    -fx-background-color: #4f9cf9;
+    -fx-text-fill: white;
+    -fx-font-size: 13px;
+    -fx-font-weight: bold;
+    -fx-font-family: "System";
+    -fx-padding: 7 16 7 16;
+    -fx-background-radius: 8;
+    -fx-cursor: hand;
+    -fx-border-width: 0;
+}
+
+.btn-primary:hover {
+    -fx-background-color: #3a8ae8;
+}
+
+.btn-ghost {
+    -fx-background-color: transparent;
+    -fx-text-fill: #9ca3af;
+    -fx-font-size: 13px;
+    -fx-font-family: "System";
+    -fx-padding: 7 14 7 14;
+    -fx-background-radius: 8;
+    -fx-border-color: rgba(255,255,255,0.12);
+    -fx-border-width: 1;
+    -fx-border-radius: 8;
+    -fx-cursor: hand;
+}
+
+.btn-ghost:hover {
+    -fx-background-color: #1a1e2a;
+    -fx-text-fill: #e8eaf0;
+}
+
+/* ── SCROLL AREA ─────────────────────────────────── */
+.content-scroll {
+    -fx-background-color: #0d0f14;
+    -fx-background: #0d0f14;
+}
+
+.content-scroll > .viewport {
+    -fx-background-color: #0d0f14;
+}
+
+/* Esconde scrollbar horizontal */
+.content-scroll > .scroll-bar:horizontal {
+    -fx-opacity: 0;
+    -fx-padding: -20;
+}
+
+/* Scrollbar vertical fina e sutil */
+.content-scroll > .scroll-bar:vertical {
+    -fx-background-color: transparent;
+    -fx-pref-width: 6;
+}
+
+.content-scroll > .scroll-bar:vertical .track {
+    -fx-background-color: transparent;
+}
+
+.content-scroll > .scroll-bar:vertical .thumb {
+    -fx-background-color: #222736;
+    -fx-background-radius: 4;
+}
+
+.content-area {
+    -fx-background-color: #0d0f14;
+    -fx-spacing: 16;
+}
+
+/* ── STAT CARDS ──────────────────────────────────── */
+.stat-card {
+    -fx-background-radius: 12;
+    -fx-border-radius: 12;
+    -fx-border-color: rgba(255,255,255,0.06);
+    -fx-border-width: 1;
+    -fx-padding: 16 18 16 18;
+    -fx-spacing: 6;
+}
+
+.stat-blue { -fx-background-color: #13161e; }
+.stat-green { -fx-background-color: #13161e; }
+.stat-purple { -fx-background-color: #13161e; }
+.stat-yellow { -fx-background-color: #13161e; }
+
+/* Barra colorida no topo de cada card via borda esquerda */
+.stat-blue { -fx-border-color: #4f9cf9 rgba(255,255,255,0.06) rgba(255,255,255,0.06) rgba(255,255,255,0.06); -fx-border-width: 2 1 1 1; }
+.stat-green { -fx-border-color: #38d9a9 rgba(255,255,255,0.06) rgba(255,255,255,0.06) rgba(255,255,255,0.06); -fx-border-width: 2 1 1 1; }
+.stat-purple { -fx-border-color: #f093fb rgba(255,255,255,0.06) rgba(255,255,255,0.06) rgba(255,255,255,0.06); -fx-border-width: 2 1 1 1; }
+.stat-yellow { -fx-border-color: #ffd93d rgba(255,255,255,0.06) rgba(255,255,255,0.06) rgba(255,255,255,0.06); -fx-border-width: 2 1 1 1; }
+
+.stat-label {
+    -fx-font-size: 10px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #6b7280;
+}
+
+.stat-value {
+    -fx-font-size: 28px;
+    -fx-font-weight: bold;
+    -fx-font-family: "Courier New";
+}
+
+.stat-value-blue   { -fx-text-fill: #4f9cf9; }
+.stat-value-green  { -fx-text-fill: #38d9a9; }
+.stat-value-purple { -fx-text-fill: #f093fb; }
+.stat-value-yellow { -fx-text-fill: #ffd93d; }
+
+.stat-sub {
+    -fx-font-size: 11px;
+    -fx-text-fill: #6b7280;
+}
+
+/* ── CARDS GENÉRICOS ─────────────────────────────── */
+.card {
+    -fx-background-color: #13161e;
+    -fx-border-color: rgba(255,255,255,0.06);
+    -fx-border-width: 1;
+    -fx-border-radius: 12;
+    -fx-background-radius: 12;
+}
+
+.card-header {
+    -fx-padding: 14 18 14 18;
+    -fx-border-color: rgba(255,255,255,0.06);
+    -fx-border-width: 0 0 1 0;
+    -fx-spacing: 8;
+    -fx-alignment: CENTER_LEFT;
+}
+
+.card-icon {
+    -fx-font-size: 14px;
+}
+
+.card-title {
+    -fx-font-size: 13px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #e8eaf0;
+}
+
+.card-action {
+    -fx-font-size: 12px;
+    -fx-text-fill: #4f9cf9;
+    -fx-cursor: hand;
+}
+
+/* ── TABLE ───────────────────────────────────────── */
+.table-header {
+    -fx-background-color: #1a1e2a;
+    -fx-padding: 8 18 8 18;
+    -fx-spacing: 0;
+}
+
+.table-header .th {
+    -fx-font-size: 10px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #6b7280;
+}
+
+.table-row {
+    -fx-padding: 11 18 11 0;
+    -fx-border-color: rgba(255,255,255,0.06);
+    -fx-border-width: 0 0 1 0;
+    -fx-cursor: hand;
+}
+
+.table-row:hover {
+    -fx-background-color: #1a1e2a;
+}
+
+.row-name {
+    -fx-font-size: 13px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #e8eaf0;
+}
+
+.row-count {
+    -fx-font-size: 12px;
+    -fx-text-fill: #6b7280;
+}
+
+.row-score {
+    -fx-font-size: 13px;
+    -fx-font-weight: bold;
+    -fx-font-family: "Courier New";
+}
+
+.score-high { -fx-text-fill: #38d9a9; }
+.score-mid  { -fx-text-fill: #ffd93d; }
+.score-low  { -fx-text-fill: #ff6b6b; }
+
+/* ── PROGRESS BARS ───────────────────────────────── */
+.prog-bar {
+    -fx-pref-height: 4;
+    -fx-background-radius: 99;
+    -fx-border-radius: 99;
+}
+
+.prog-bar > .track {
+    -fx-background-color: #222736;
+    -fx-background-radius: 99;
+}
+
+.prog-blue > .bar   { -fx-background-color: #4f9cf9; -fx-background-radius: 99; }
+.prog-green > .bar  { -fx-background-color: #38d9a9; -fx-background-radius: 99; }
+.prog-purple > .bar { -fx-background-color: #f093fb; -fx-background-radius: 99; }
+.prog-yellow > .bar { -fx-background-color: #ffd93d; -fx-background-radius: 99; }
+
+/* ── QUESTÃO ─────────────────────────────────────── */
+.question-body {
+    -fx-padding: 16 18 18 18;
+    -fx-spacing: 12;
+}
+
+.q-meta {
+    -fx-font-size: 10px;
+    -fx-font-family: "Courier New";
+    -fx-text-fill: #6b7280;
+}
+
+.q-text {
+    -fx-font-size: 14px;
+    -fx-text-fill: #e8eaf0;
+    -fx-line-spacing: 4;
+}
+
+.question-counter {
+    -fx-font-size: 11px;
+    -fx-text-fill: #6b7280;
+    -fx-font-family: "Courier New";
+}
+
+/* ── OPTIONS ─────────────────────────────────────── */
+.q-option {
+    -fx-padding: 9 14 9 14;
+    -fx-background-radius: 8;
+    -fx-border-radius: 8;
+    -fx-border-color: rgba(255,255,255,0.12);
+    -fx-border-width: 1;
+    -fx-cursor: hand;
+    -fx-spacing: 10;
+    -fx-alignment: CENTER_LEFT;
+}
+
+.q-option:hover {
+    -fx-background-color: #1a1e2a;
+    -fx-border-color: #4f9cf9;
+}
+
+.q-option-selected {
+    -fx-background-color: rgba(79,156,249,0.12);
+    -fx-border-color: #4f9cf9;
+}
+
+.q-option-correct {
+    -fx-background-color: rgba(56,217,169,0.12);
+    -fx-border-color: #38d9a9;
+}
+
+.q-option-wrong {
+    -fx-background-color: rgba(255,107,107,0.12);
+    -fx-border-color: #ff6b6b;
+}
+
+.opt-letter {
+    -fx-font-size: 10px;
+    -fx-font-weight: bold;
+    -fx-font-family: "Courier New";
+    -fx-text-fill: #9ca3af;
+    -fx-background-color: #222736;
+    -fx-background-radius: 5;
+    -fx-padding: 3 6 3 6;
+    -fx-min-width: 22;
+    -fx-alignment: CENTER;
+}
+
+.q-option-selected .opt-letter { -fx-text-fill: #4f9cf9; -fx-background-color: rgba(79,156,249,0.2); }
+.q-option-correct .opt-letter  { -fx-text-fill: #38d9a9; -fx-background-color: rgba(56,217,169,0.2); }
+.q-option-wrong .opt-letter    { -fx-text-fill: #ff6b6b; -fx-background-color: rgba(255,107,107,0.2); }
+
+.opt-text {
+    -fx-font-size: 13px;
+    -fx-text-fill: #e8eaf0;
+}
+
+.q-option-selected .opt-text { -fx-text-fill: #4f9cf9; }
+.q-option-correct .opt-text  { -fx-text-fill: #38d9a9; }
+.q-option-wrong .opt-text    { -fx-text-fill: #ff6b6b; }
+
+/* ── STREAK ──────────────────────────────────────── */
+.streak-row {
+    -fx-padding: 12 14 14 14;
+}
+
+.streak-day {
+    -fx-background-color: #222736;
+    -fx-background-radius: 6;
+    -fx-padding: 8 4 8 4;
+    -fx-cursor: hand;
+    -fx-spacing: 4;
+    -fx-alignment: CENTER;
+    -fx-min-height: 52;
+}
+
+.streak-done {
+    -fx-background-color: rgba(56,217,169,0.2);
+}
+
+.streak-today {
+    -fx-background-color: rgba(79,156,249,0.2);
+}
+
+.streak-num {
+    -fx-font-size: 13px;
+    -fx-font-weight: bold;
+    -fx-font-family: "Courier New";
+    -fx-text-fill: #6b7280;
+}
+
+.streak-done .streak-num  { -fx-text-fill: #38d9a9; }
+.streak-today .streak-num { -fx-text-fill: #4f9cf9; }
+
+.streak-dow {
+    -fx-font-size: 9px;
+    -fx-text-fill: #6b7280;
+}
+
+.streak-done .streak-dow  { -fx-text-fill: #38d9a9; }
+.streak-today .streak-dow { -fx-text-fill: #4f9cf9; }
+
+/* ── TASK LIST ───────────────────────────────────── */
+.task-list {
+    -fx-spacing: 0;
+}
+
+.task-item {
+    -fx-padding: 10 18 10 18;
+    -fx-border-color: rgba(255,255,255,0.06);
+    -fx-border-width: 0 0 1 0;
+    -fx-cursor: hand;
+    -fx-spacing: 10;
+    -fx-alignment: CENTER_LEFT;
+}
+
+.task-item:hover {
+    -fx-background-color: #1a1e2a;
+}
+
+.task-text {
+    -fx-font-size: 13px;
+    -fx-text-fill: #e8eaf0;
+}
+
+.task-done {
+    -fx-strikethrough: true;
+    -fx-text-fill: #6b7280;
+}
+
+.task-check {
+    -fx-cursor: hand;
+}
+
+/* Estiliza CheckBox */
+.task-check > .box {
+    -fx-background-color: transparent;
+    -fx-border-color: rgba(255,255,255,0.2);
+    -fx-border-radius: 4;
+    -fx-border-width: 1.5;
+    -fx-min-width: 16;
+    -fx-min-height: 16;
+    -fx-max-width: 16;
+    -fx-max-height: 16;
+}
+
+.task-check:selected > .box {
+    -fx-background-color: #38d9a9;
+    -fx-border-color: #38d9a9;
+}
+
+.task-check:selected > .box > .mark {
+    -fx-background-color: #000000;
+}
+
+/* ── TASK TAGS ───────────────────────────────────── */
+.task-tag {
+    -fx-font-size: 10px;
+    -fx-font-weight: bold;
+    -fx-padding: 2 8 2 8;
+    -fx-background-radius: 999;
+}
+
+.tag-blue   { -fx-background-color: rgba(79,156,249,0.12);  -fx-text-fill: #4f9cf9; }
+.tag-green  { -fx-background-color: rgba(56,217,169,0.12);  -fx-text-fill: #38d9a9; }
+.tag-red    { -fx-background-color: rgba(255,107,107,0.12); -fx-text-fill: #ff6b6b; }
+.tag-yellow { -fx-background-color: rgba(255,217,61,0.12);  -fx-text-fill: #ffd93d; }
+
+/* ── ACTIVITY ────────────────────────────────────── */
+.activity-item {
+    -fx-padding: 10 18 10 18;
+    -fx-border-color: rgba(255,255,255,0.06);
+    -fx-border-width: 0 0 1 0;
+    -fx-cursor: hand;
+    -fx-spacing: 10;
+}
+
+.activity-item:hover {
+    -fx-background-color: #1a1e2a;
+}
+
+.act-icon {
+    -fx-min-width: 34;
+    -fx-min-height: 34;
+    -fx-max-width: 34;
+    -fx-max-height: 34;
+    -fx-background-radius: 8;
+    -fx-alignment: CENTER;
+}
+
+.act-quiz   { -fx-background-color: rgba(79,156,249,0.12); }
+.act-pdf    { -fx-background-color: rgba(255,107,107,0.12); }
+.act-review { -fx-background-color: rgba(56,217,169,0.12); }
+
+.act-title {
+    -fx-font-size: 13px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #e8eaf0;
+}
+
+.act-meta {
+    -fx-font-size: 11px;
+    -fx-text-fill: #6b7280;
+}
+
+.act-time {
+    -fx-font-size: 11px;
+    -fx-text-fill: #6b7280;
+    -fx-font-family: "Courier New";
+}
