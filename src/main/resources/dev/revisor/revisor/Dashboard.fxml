@@ -1,417 +1,117 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.layout.*?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.text.*?>
-<?import javafx.geometry.*?>
-<?import javafx.scene.shape.*?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Region?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.shape.Rectangle?>
 
-<BorderPane xmlns="http://javafx.com/javafx"
-            xmlns:fx="http://javafx.com/fxml"
-            fx:controller="com.studyos.DashboardController"
-            stylesheets="@styles.css"
-            prefWidth="1200" prefHeight="760"
-            styleClass="root-pane">
+<BorderPane prefHeight="760" prefWidth="1200" styleClass="root-pane" stylesheets="@styles.css" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="dev.revisor.revisor.controller.MainController">
 
     <!-- ══════════════════════════════════
          SIDEBAR (LEFT)
     ══════════════════════════════════ -->
     <left>
-        <VBox styleClass="sidebar" prefWidth="220">
+        <VBox prefWidth="220" styleClass="sidebar">
 
             <!-- Logo -->
             <VBox styleClass="logo-area">
                 <HBox alignment="CENTER_LEFT" spacing="0">
-                    <Label text="Study" styleClass="logo-text"/>
-                    <Label text="OS" styleClass="logo-accent"/>
+                    <Label styleClass="logo-text" text="Revisor" />
+                    <Label styleClass="logo-accent" />
                 </HBox>
-                <Label text="// seu ambiente de estudos" styleClass="logo-sub"/>
             </VBox>
 
             <!-- Navegação Principal -->
             <VBox styleClass="nav-section" VBox.vgrow="ALWAYS">
-                <Label text="NAVEGAÇÃO" styleClass="nav-label"/>
+                <Label styleClass="nav-label" text="NAVEGAÇÃO" />
 
-                <HBox styleClass="nav-item nav-active" fx:id="navDashboard">
-                    <Label text="⊞" styleClass="nav-icon"/>
-                    <Label text="Dashboard" styleClass="nav-text"/>
+                <HBox fx:id="navDashboard" styleClass="nav-item nav-active">
+                    <Label styleClass="nav-icon" text="⊞" />
+                    <Label styleClass="nav-text" />
                 </HBox>
-                <HBox styleClass="nav-item" fx:id="navMateriais">
-                    <Label text="📚" styleClass="nav-icon"/>
-                    <Label text="Materiais" styleClass="nav-text"/>
-                    <Region HBox.hgrow="ALWAYS"/>
-                    <Label text="12" styleClass="badge badge-blue"/>
+                <HBox fx:id="navMateriais" styleClass="nav-item">
+                    <Label styleClass="nav-icon" text="📚" />
+                    <Label styleClass="nav-text" text="Materiais" />
+                    <Region HBox.hgrow="ALWAYS" />
+                    <Label styleClass="badge badge-blue" text="12" />
                 </HBox>
-                <HBox styleClass="nav-item" fx:id="navQuestoes">
-                    <Label text="✏" styleClass="nav-icon"/>
-                    <Label text="Questões" styleClass="nav-text"/>
-                    <Region HBox.hgrow="ALWAYS"/>
-                    <Label text="38" styleClass="badge badge-warn"/>
+                <HBox fx:id="navQuestoes" styleClass="nav-item">
+                    <Label styleClass="nav-icon" text="✏" />
+                    <Label styleClass="nav-text" text="Questões" />
+                    <Region HBox.hgrow="ALWAYS" />
+                    <Label styleClass="badge badge-warn" text="38" />
                 </HBox>
-                <HBox styleClass="nav-item" fx:id="navDesempenho">
-                    <Label text="📊" styleClass="nav-icon"/>
-                    <Label text="Desempenho" styleClass="nav-text"/>
+                <HBox fx:id="navDesempenho" styleClass="nav-item">
+                    <Label styleClass="nav-icon" text="📊" />
+                    <Label styleClass="nav-text" text="Desempenho" />
                 </HBox>
-                <HBox styleClass="nav-item" fx:id="navPlanejamento">
-                    <Label text="🗓" styleClass="nav-icon"/>
-                    <Label text="Planejamento" styleClass="nav-text"/>
+                <HBox fx:id="navPlanejamento" styleClass="nav-item">
+                    <Label styleClass="nav-icon" text="🗓" />
+                    <Label styleClass="nav-text" text="Planejamento" />
                 </HBox>
-                <HBox styleClass="nav-item" fx:id="navRevisoes">
-                    <Label text="🔖" styleClass="nav-icon"/>
-                    <Label text="Revisões" styleClass="nav-text"/>
-                    <Region HBox.hgrow="ALWAYS"/>
-                    <Label text="5" styleClass="badge badge-green"/>
+                <HBox fx:id="navRevisoes" styleClass="nav-item">
+                    <Label styleClass="nav-icon" text="🔖" />
+                    <Label styleClass="nav-text" text="Revisões" />
+                    <Region HBox.hgrow="ALWAYS" />
+                    <Label styleClass="badge badge-green" text="5" />
                 </HBox>
 
                 <!-- Matérias -->
-                <Label text="MATÉRIAS" styleClass="nav-label" style="-fx-padding: 16 0 4 8;"/>
+                <Label style="-fx-padding: 16 0 4 8;" styleClass="nav-label" text="MATÉRIAS" />
 
-                <HBox styleClass="subject-item" spacing="8" alignment="CENTER_LEFT">
-                    <Rectangle width="8" height="8" arcWidth="3" arcHeight="3" fill="#4f9cf9" styleClass="subject-dot"/>
-                    <Label text="Direito Civil" styleClass="subject-name"/>
-                    <Region HBox.hgrow="ALWAYS"/>
-                    <Label text="72%" styleClass="subject-pct"/>
+                <HBox alignment="CENTER_LEFT" spacing="8" styleClass="subject-item">
+                    <Rectangle arcHeight="3" arcWidth="3" fill="#4f9cf9" height="8" styleClass="subject-dot" width="8" />
+                    <Label styleClass="subject-name" text="Matemática" />
+                    <Region HBox.hgrow="ALWAYS" />
+                    <Label styleClass="subject-pct" text="72%" />
                 </HBox>
-                <HBox styleClass="subject-item" spacing="8" alignment="CENTER_LEFT">
-                    <Rectangle width="8" height="8" arcWidth="3" arcHeight="3" fill="#38d9a9" styleClass="subject-dot"/>
-                    <Label text="Constitucional" styleClass="subject-name"/>
-                    <Region HBox.hgrow="ALWAYS"/>
-                    <Label text="85%" styleClass="subject-pct"/>
+                <HBox alignment="CENTER_LEFT" spacing="8" styleClass="subject-item">
+                    <Rectangle arcHeight="3" arcWidth="3" fill="#38d9a9" height="8" styleClass="subject-dot" width="8" />
+                    <Label styleClass="subject-name" text="Português" />
+                    <Region HBox.hgrow="ALWAYS" />
+                    <Label styleClass="subject-pct" text="85%" />
                 </HBox>
-                <HBox styleClass="subject-item" spacing="8" alignment="CENTER_LEFT">
-                    <Rectangle width="8" height="8" arcWidth="3" arcHeight="3" fill="#f093fb" styleClass="subject-dot"/>
-                    <Label text="Administrativo" styleClass="subject-name"/>
-                    <Region HBox.hgrow="ALWAYS"/>
-                    <Label text="44%" styleClass="subject-pct"/>
+                <HBox alignment="CENTER_LEFT" spacing="8" styleClass="subject-item">
+                    <Rectangle arcHeight="3" arcWidth="3" fill="#f093fb" height="8" styleClass="subject-dot" width="8" />
+                    <Label styleClass="subject-name" text="História" />
+                    <Region HBox.hgrow="ALWAYS" />
+                    <Label styleClass="subject-pct" text="44%" />
                 </HBox>
-                <HBox styleClass="subject-item" spacing="8" alignment="CENTER_LEFT">
-                    <Rectangle width="8" height="8" arcWidth="3" arcHeight="3" fill="#ffd93d" styleClass="subject-dot"/>
-                    <Label text="Penal" styleClass="subject-name"/>
-                    <Region HBox.hgrow="ALWAYS"/>
-                    <Label text="31%" styleClass="subject-pct"/>
+                <HBox alignment="CENTER_LEFT" spacing="8" styleClass="subject-item">
+                    <Rectangle arcHeight="3" arcWidth="3" fill="#ffd93d" height="8" styleClass="subject-dot" width="8" />
+                    <Label styleClass="subject-name" text="Geografia" />
+                    <Region HBox.hgrow="ALWAYS" />
+                    <Label styleClass="subject-pct" text="31%" />
                 </HBox>
-                <HBox styleClass="subject-item" spacing="8" alignment="CENTER_LEFT">
-                    <Rectangle width="8" height="8" arcWidth="3" arcHeight="3" fill="#ff6b6b" styleClass="subject-dot"/>
-                    <Label text="Tributário" styleClass="subject-name"/>
-                    <Region HBox.hgrow="ALWAYS"/>
-                    <Label text="18%" styleClass="subject-pct"/>
+                <HBox alignment="CENTER_LEFT" spacing="8" styleClass="subject-item">
+                    <Rectangle arcHeight="3" arcWidth="3" fill="#ff6b6b" height="8" styleClass="subject-dot" width="8" />
+                    <Label styleClass="subject-name" text="Inglês" />
+                    <Region HBox.hgrow="ALWAYS" />
+                    <Label styleClass="subject-pct" text="18%" />
                 </HBox>
 
-                <Label text="+ Adicionar matéria" styleClass="add-subject-link"
-                       onMouseClicked="#onAddSubject"/>
+                <Label onMouseClicked="#onAddSubject" styleClass="add-subject-link" text="+ Adicionar matéria" />
             </VBox>
 
             <!-- User Footer -->
-            <HBox styleClass="sidebar-footer" alignment="CENTER_LEFT" spacing="10">
+            <HBox alignment="CENTER_LEFT" spacing="10" styleClass="sidebar-footer">
                 <StackPane styleClass="user-avatar">
-                    <Label text="M" styleClass="user-avatar-letter"/>
+                    <Label styleClass="user-avatar-letter" text="M" />
                 </StackPane>
                 <VBox spacing="2">
-                    <Label text="Meu Perfil" styleClass="user-name"/>
-                    <Label text="Concurseiro" styleClass="user-role"/>
+                    <Label styleClass="user-name" text="Meu Perfil" />
+                    <Label styleClass="user-role" text="Concurseiro" />
                 </VBox>
-                <Region HBox.hgrow="ALWAYS"/>
-                <Label text="⚙" styleClass="settings-icon" onMouseClicked="#onSettings"/>
+                <Region HBox.hgrow="ALWAYS" />
+                <Label onMouseClicked="#onSettings" styleClass="settings-icon" text="⚙" />
             </HBox>
         </VBox>
     </left>
-
-    <!-- ══════════════════════════════════
-         CENTER (TOPBAR + CONTENT)
-    ══════════════════════════════════ -->
-    <center>
-        <VBox>
-
-            <!-- TOPBAR -->
-            <HBox styleClass="topbar" alignment="CENTER_LEFT" spacing="12">
-                <Label text="Dashboard" styleClass="page-title"/>
-
-                <!-- Tabs -->
-                <HBox styleClass="tab-bar" spacing="4">
-                    <Label text="Visão Geral" styleClass="tab tab-active" fx:id="tabGeral"
-                           onMouseClicked="#onTabGeral"/>
-                    <Label text="Esta Semana" styleClass="tab" fx:id="tabSemana"
-                           onMouseClicked="#onTabSemana"/>
-                    <Label text="Por Matéria" styleClass="tab" fx:id="tabMateria"
-                           onMouseClicked="#onTabMateria"/>
-                </HBox>
-
-                <Region HBox.hgrow="ALWAYS"/>
-
-                <Button text="📂  Importar PDF" styleClass="btn-ghost"
-                        onAction="#onImportPdf"/>
-                <Button text="＋  Nova Questão" styleClass="btn-primary"
-                        onAction="#onNewQuestion"/>
-            </HBox>
-
-            <!-- SCROLLABLE CONTENT -->
-            <ScrollPane styleClass="content-scroll" fitToWidth="true" VBox.vgrow="ALWAYS">
-                <VBox styleClass="content-area" spacing="16">
-                    <padding><Insets top="20" right="20" bottom="20" left="20"/></padding>
-
-                    <!-- ── STATS ROW ── -->
-                    <HBox spacing="12">
-                        <!-- Questões Resolvidas -->
-                        <VBox styleClass="stat-card stat-blue" HBox.hgrow="ALWAYS">
-                            <Label text="QUESTÕES RESOLVIDAS" styleClass="stat-label"/>
-                            <Label text="1.247" fx:id="statQuestoes" styleClass="stat-value stat-value-blue"/>
-                            <Label text="+34 hoje" styleClass="stat-sub"/>
-                        </VBox>
-                        <!-- Taxa Acertos -->
-                        <VBox styleClass="stat-card stat-green" HBox.hgrow="ALWAYS">
-                            <Label text="TAXA DE ACERTOS" styleClass="stat-label"/>
-                            <Label text="68%" fx:id="statAcertos" styleClass="stat-value stat-value-green"/>
-                            <Label text="↑ 4% vs semana passada" styleClass="stat-sub"/>
-                        </VBox>
-                        <!-- Horas -->
-                        <VBox styleClass="stat-card stat-purple" HBox.hgrow="ALWAYS">
-                            <Label text="HORAS ESTUDADAS" styleClass="stat-label"/>
-                            <Label text="142h" fx:id="statHoras" styleClass="stat-value stat-value-purple"/>
-                            <Label text="Meta: 200h no mês" styleClass="stat-sub"/>
-                        </VBox>
-                        <!-- Sequência -->
-                        <VBox styleClass="stat-card stat-yellow" HBox.hgrow="ALWAYS">
-                            <Label text="SEQUÊNCIA ATUAL" styleClass="stat-label"/>
-                            <Label text="14d" fx:id="statSequencia" styleClass="stat-value stat-value-yellow"/>
-                            <Label text="🔥 Recorde: 21 dias" styleClass="stat-sub"/>
-                        </VBox>
-                    </HBox>
-
-                    <!-- ── TWO COLUMNS ── -->
-                    <HBox spacing="16" alignment="TOP_LEFT">
-
-                        <!-- LEFT COLUMN -->
-                        <VBox spacing="16" HBox.hgrow="ALWAYS">
-
-                            <!-- Desempenho por Matéria -->
-                            <VBox styleClass="card">
-                                <HBox styleClass="card-header" alignment="CENTER_LEFT" spacing="8">
-                                    <Label text="📋" styleClass="card-icon"/>
-                                    <Label text="Desempenho por Matéria" styleClass="card-title"/>
-                                    <Region HBox.hgrow="ALWAYS"/>
-                                    <Label text="Ver tudo →" styleClass="card-action"
-                                           onMouseClicked="#onVerDesempenho"/>
-                                </HBox>
-
-                                <!-- Table Header -->
-                                <HBox styleClass="table-header" spacing="0">
-                                    <Label text="Matéria" styleClass="th" prefWidth="190"/>
-                                    <Label text="Questões" styleClass="th" prefWidth="100"/>
-                                    <Label text="Acertos" styleClass="th" prefWidth="80"/>
-                                    <Label text="Progresso" styleClass="th" HBox.hgrow="ALWAYS"/>
-                                </HBox>
-
-                                <!-- Table Rows - serão geradas pelo Controller também -->
-                                <!-- Linha 1 -->
-                                <HBox styleClass="table-row" spacing="0" alignment="CENTER_LEFT">
-                                    <HBox prefWidth="190" spacing="8" alignment="CENTER_LEFT" style="-fx-padding: 0 0 0 14;">
-                                        <Rectangle width="10" height="10" arcWidth="3" arcHeight="3" fill="#4f9cf9"/>
-                                        <Label text="Direito Civil" styleClass="row-name"/>
-                                    </HBox>
-                                    <Label text="342 questões" styleClass="row-count" prefWidth="100"/>
-                                    <Label text="68%" styleClass="row-score score-mid" prefWidth="80"/>
-                                    <ProgressBar progress="0.72" styleClass="prog-bar prog-blue" HBox.hgrow="ALWAYS" maxWidth="Infinity"/>
-                                </HBox>
-                                <!-- Linha 2 -->
-                                <HBox styleClass="table-row" spacing="0" alignment="CENTER_LEFT">
-                                    <HBox prefWidth="190" spacing="8" alignment="CENTER_LEFT" style="-fx-padding: 0 0 0 14;">
-                                        <Rectangle width="10" height="10" arcWidth="3" arcHeight="3" fill="#38d9a9"/>
-                                        <Label text="Constitucional" styleClass="row-name"/>
-                                    </HBox>
-                                    <Label text="218 questões" styleClass="row-count" prefWidth="100"/>
-                                    <Label text="85%" styleClass="row-score score-high" prefWidth="80"/>
-                                    <ProgressBar progress="0.85" styleClass="prog-bar prog-green" HBox.hgrow="ALWAYS" maxWidth="Infinity"/>
-                                </HBox>
-                                <!-- Linha 3 -->
-                                <HBox styleClass="table-row" spacing="0" alignment="CENTER_LEFT">
-                                    <HBox prefWidth="190" spacing="8" alignment="CENTER_LEFT" style="-fx-padding: 0 0 0 14;">
-                                        <Rectangle width="10" height="10" arcWidth="3" arcHeight="3" fill="#f093fb"/>
-                                        <Label text="Administrativo" styleClass="row-name"/>
-                                    </HBox>
-                                    <Label text="189 questões" styleClass="row-count" prefWidth="100"/>
-                                    <Label text="61%" styleClass="row-score score-mid" prefWidth="80"/>
-                                    <ProgressBar progress="0.44" styleClass="prog-bar prog-purple" HBox.hgrow="ALWAYS" maxWidth="Infinity"/>
-                                </HBox>
-                                <!-- Linha 4 -->
-                                <HBox styleClass="table-row" spacing="0" alignment="CENTER_LEFT">
-                                    <HBox prefWidth="190" spacing="8" alignment="CENTER_LEFT" style="-fx-padding: 0 0 0 14;">
-                                        <Rectangle width="10" height="10" arcWidth="3" arcHeight="3" fill="#ffd93d"/>
-                                        <Label text="Penal" styleClass="row-name"/>
-                                    </HBox>
-                                    <Label text="97 questões" styleClass="row-count" prefWidth="100"/>
-                                    <Label text="42%" styleClass="row-score score-low" prefWidth="80"/>
-                                    <ProgressBar progress="0.31" styleClass="prog-bar prog-yellow" HBox.hgrow="ALWAYS" maxWidth="Infinity"/>
-                                </HBox>
-                            </VBox>
-
-                            <!-- Questão do Dia -->
-                            <VBox styleClass="card">
-                                <HBox styleClass="card-header" alignment="CENTER_LEFT" spacing="8">
-                                    <Label text="✏" styleClass="card-icon"/>
-                                    <Label text="Questão do Dia · Direito Civil" styleClass="card-title"/>
-                                    <Region HBox.hgrow="ALWAYS"/>
-                                    <Label text="38/50" styleClass="question-counter"/>
-                                    <Label text="próxima →" styleClass="card-action"
-                                           onMouseClicked="#onNextQuestion"/>
-                                </HBox>
-                                <VBox styleClass="question-body" spacing="12">
-                                    <Label text="VUNESP · 2023 · Múltipla Escolha" styleClass="q-meta"/>
-                                    <Label text="Sobre a capacidade civil das pessoas naturais, conforme o Código Civil Brasileiro, é correto afirmar que:"
-                                           styleClass="q-text" wrapText="true"/>
-
-                                    <VBox fx:id="optionsBox" spacing="6">
-                                        <HBox styleClass="q-option" fx:id="opt1" onMouseClicked="#onOption1" spacing="10" alignment="CENTER_LEFT">
-                                            <Label text="A" styleClass="opt-letter"/>
-                                            <Label text="A capacidade de fato coincide necessariamente com a capacidade de direito." styleClass="opt-text" wrapText="true" HBox.hgrow="ALWAYS"/>
-                                        </HBox>
-                                        <HBox styleClass="q-option q-option-selected" fx:id="opt2" onMouseClicked="#onOption2" spacing="10" alignment="CENTER_LEFT">
-                                            <Label text="B" styleClass="opt-letter"/>
-                                            <Label text="Os menores de 16 anos são absolutamente incapazes de exercer pessoalmente os atos da vida civil." styleClass="opt-text" wrapText="true" HBox.hgrow="ALWAYS"/>
-                                        </HBox>
-                                        <HBox styleClass="q-option" fx:id="opt3" onMouseClicked="#onOption3" spacing="10" alignment="CENTER_LEFT">
-                                            <Label text="C" styleClass="opt-letter"/>
-                                            <Label text="A emancipação voluntária exige apenas a manifestação de vontade do menor." styleClass="opt-text" wrapText="true" HBox.hgrow="ALWAYS"/>
-                                        </HBox>
-                                        <HBox styleClass="q-option" fx:id="opt4" onMouseClicked="#onOption4" spacing="10" alignment="CENTER_LEFT">
-                                            <Label text="D" styleClass="opt-letter"/>
-                                            <Label text="O pródigo é considerado absolutamente incapaz para todos os atos civis." styleClass="opt-text" wrapText="true" HBox.hgrow="ALWAYS"/>
-                                        </HBox>
-                                    </VBox>
-
-                                    <HBox spacing="8">
-                                        <Button text="Confirmar Resposta" styleClass="btn-primary" HBox.hgrow="ALWAYS"
-                                                maxWidth="Infinity" onAction="#onConfirmAnswer"/>
-                                        <Button text="🔖 Salvar" styleClass="btn-ghost" onAction="#onSaveQuestion"/>
-                                        <Button text="⚑ Reportar" styleClass="btn-ghost" onAction="#onReportQuestion"/>
-                                    </HBox>
-                                </VBox>
-                            </VBox>
-                        </VBox>
-
-                        <!-- RIGHT COLUMN -->
-                        <VBox spacing="16" prefWidth="320">
-
-                            <!-- Streak / Sequência -->
-                            <VBox styleClass="card">
-                                <HBox styleClass="card-header" alignment="CENTER_LEFT" spacing="8">
-                                    <Label text="🔥" styleClass="card-icon"/>
-                                    <Label text="Sequência · Fevereiro" styleClass="card-title"/>
-                                </HBox>
-                                <HBox styleClass="streak-row" spacing="5">
-                                    <VBox styleClass="streak-day streak-done" HBox.hgrow="ALWAYS" alignment="CENTER">
-                                        <Label text="24" styleClass="streak-num"/>
-                                        <Label text="Seg" styleClass="streak-dow"/>
-                                    </VBox>
-                                    <VBox styleClass="streak-day streak-done" HBox.hgrow="ALWAYS" alignment="CENTER">
-                                        <Label text="25" styleClass="streak-num"/>
-                                        <Label text="Ter" styleClass="streak-dow"/>
-                                    </VBox>
-                                    <VBox styleClass="streak-day streak-done" HBox.hgrow="ALWAYS" alignment="CENTER">
-                                        <Label text="26" styleClass="streak-num"/>
-                                        <Label text="Qua" styleClass="streak-dow"/>
-                                    </VBox>
-                                    <VBox styleClass="streak-day streak-done" HBox.hgrow="ALWAYS" alignment="CENTER">
-                                        <Label text="27" styleClass="streak-num"/>
-                                        <Label text="Qui" styleClass="streak-dow"/>
-                                    </VBox>
-                                    <VBox styleClass="streak-day streak-today" HBox.hgrow="ALWAYS" alignment="CENTER">
-                                        <Label text="28" styleClass="streak-num"/>
-                                        <Label text="Sex" styleClass="streak-dow"/>
-                                    </VBox>
-                                    <VBox styleClass="streak-day" HBox.hgrow="ALWAYS" alignment="CENTER">
-                                        <Label text="01" styleClass="streak-num"/>
-                                        <Label text="Sáb" styleClass="streak-dow"/>
-                                    </VBox>
-                                    <VBox styleClass="streak-day" HBox.hgrow="ALWAYS" alignment="CENTER">
-                                        <Label text="02" styleClass="streak-num"/>
-                                        <Label text="Dom" styleClass="streak-dow"/>
-                                    </VBox>
-                                </HBox>
-                            </VBox>
-
-                            <!-- Tarefas do Dia -->
-                            <VBox styleClass="card">
-                                <HBox styleClass="card-header" alignment="CENTER_LEFT" spacing="8">
-                                    <Label text="☑" styleClass="card-icon"/>
-                                    <Label text="Para Estudar Hoje" styleClass="card-title"/>
-                                    <Region HBox.hgrow="ALWAYS"/>
-                                    <Label text="+ Adicionar" styleClass="card-action" onMouseClicked="#onAddTask"/>
-                                </HBox>
-                                <VBox fx:id="taskList" styleClass="task-list">
-                                    <!-- Tasks geradas pelo Controller -->
-                                    <HBox styleClass="task-item" alignment="CENTER_LEFT" spacing="10">
-                                        <CheckBox selected="true" styleClass="task-check"/>
-                                        <Label text="Cap. 3 — Pessoas Naturais" styleClass="task-text task-done"/>
-                                        <Region HBox.hgrow="ALWAYS"/>
-                                        <Label text="Civil" styleClass="task-tag tag-blue"/>
-                                    </HBox>
-                                    <HBox styleClass="task-item" alignment="CENTER_LEFT" spacing="10">
-                                        <CheckBox selected="true" styleClass="task-check"/>
-                                        <Label text="20 questões de Constitucional" styleClass="task-text task-done"/>
-                                        <Region HBox.hgrow="ALWAYS"/>
-                                        <Label text="+15 acertos" styleClass="task-tag tag-green"/>
-                                    </HBox>
-                                    <HBox styleClass="task-item" alignment="CENTER_LEFT" spacing="10">
-                                        <CheckBox styleClass="task-check"/>
-                                        <Label text="Revisar anotações — Penal" styleClass="task-text"/>
-                                        <Region HBox.hgrow="ALWAYS"/>
-                                        <Label text="Urgente" styleClass="task-tag tag-red"/>
-                                    </HBox>
-                                    <HBox styleClass="task-item" alignment="CENTER_LEFT" spacing="10">
-                                        <CheckBox styleClass="task-check"/>
-                                        <Label text="Apostila tributário — cap. 1 a 3" styleClass="task-text"/>
-                                        <Region HBox.hgrow="ALWAYS"/>
-                                        <Label text="PDF" styleClass="task-tag tag-yellow"/>
-                                    </HBox>
-                                </VBox>
-                            </VBox>
-
-                            <!-- Atividade Recente -->
-                            <VBox styleClass="card">
-                                <HBox styleClass="card-header" alignment="CENTER_LEFT" spacing="8">
-                                    <Label text="⏱" styleClass="card-icon"/>
-                                    <Label text="Atividade Recente" styleClass="card-title"/>
-                                </HBox>
-                                <VBox>
-                                    <HBox styleClass="activity-item" alignment="CENTER_LEFT" spacing="10">
-                                        <StackPane styleClass="act-icon act-quiz">
-                                            <Label text="✏"/>
-                                        </StackPane>
-                                        <VBox spacing="2" HBox.hgrow="ALWAYS">
-                                            <Label text="Série de questões — Civil" styleClass="act-title"/>
-                                            <Label text="18/25 acertos · 72%" styleClass="act-meta"/>
-                                        </VBox>
-                                        <Label text="14:32" styleClass="act-time"/>
-                                    </HBox>
-                                    <HBox styleClass="activity-item" alignment="CENTER_LEFT" spacing="10">
-                                        <StackPane styleClass="act-icon act-pdf">
-                                            <Label text="📄"/>
-                                        </StackPane>
-                                        <VBox spacing="2" HBox.hgrow="ALWAYS">
-                                            <Label text="Apostila_Const_2024.pdf" styleClass="act-title"/>
-                                            <Label text="Capítulo 5 — pág. 88" styleClass="act-meta"/>
-                                        </VBox>
-                                        <Label text="11:10" styleClass="act-time"/>
-                                    </HBox>
-                                    <HBox styleClass="activity-item" alignment="CENTER_LEFT" spacing="10">
-                                        <StackPane styleClass="act-icon act-review">
-                                            <Label text="🔖"/>
-                                        </StackPane>
-                                        <VBox spacing="2" HBox.hgrow="ALWAYS">
-                                            <Label text="Revisão rápida — Penal" styleClass="act-title"/>
-                                            <Label text="12 flashcards revisados" styleClass="act-meta"/>
-                                        </VBox>
-                                        <Label text="09:05" styleClass="act-time"/>
-                                    </HBox>
-                                </VBox>
-                            </VBox>
-
-                        </VBox>
-                    </HBox>
-
-                </VBox>
-            </ScrollPane>
-        </VBox>
-    </center>
+   <right>
+        <StackPane fx:id="contentArea" BorderPane.alignment="CENTER" />
+   </right>
 
 </BorderPane>

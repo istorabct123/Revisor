@@ -1,14 +1,19 @@
-package com.studyos;
+package dev.revisor.revisor.controller;
 
+
+import dev.revisor.revisor.service.PdfExtractorService;
+import dev.revisor.revisor.db.ArquivoDao;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.*;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Label;
+import javafx.scene.control.TextInputDialog;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.*;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
 
 import java.net.URL;
 import java.util.ResourceBundle;
-
 /**
  * Controller do Dashboard principal.
  * Cada método marcado com @FXML corresponde a um evento no Dashboard.fxml.
@@ -146,15 +151,38 @@ public class DashboardController implements Initializable {
     // ── MATERIAIS ─────────────────────────────────────────────────────────
     @FXML
     private void onImportPdf() {
+
         javafx.stage.FileChooser chooser = new javafx.stage.FileChooser();
         chooser.setTitle("Importar PDF");
         chooser.getExtensionFilters().add(
-            new javafx.stage.FileChooser.ExtensionFilter("PDF Files", "*.pdf")
+                new javafx.stage.FileChooser.ExtensionFilter("PDF Files", "*.pdf")
         );
+
         java.io.File file = chooser.showOpenDialog(null);
+
         if (file != null) {
-            System.out.println("PDF importado: " + file.getAbsolutePath());
-            // Salvar no banco, atualizar lista de materiais
+
+            try {
+
+                // 1️⃣ Extrair texto
+                String texto = PdfExtractorService.extractText(file);
+
+                // 2️⃣ Salvar no banco
+                ArquivoDao dao = new ArquivoDao();
+                dao.inserir(
+                        null,
+                        file.getAbsolutePath(),
+                        file.getName(),
+                        file.length(),
+                        texto
+                );
+
+                showAlert("PDF importado e texto salvo com sucesso!");
+
+            } catch (Exception e) {
+                e.printStackTrace();
+                showAlert("Erro ao importar PDF.");
+            }
         }
     }
 

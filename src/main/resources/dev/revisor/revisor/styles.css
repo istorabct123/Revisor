@@ -1,10 +1,3 @@
-/* ═══════════════════════════════════════════════════
-   StudyOS — styles.css  (JavaFX CSS)
-   Coloque este arquivo na mesma pasta do Dashboard.fxml
-   ═══════════════════════════════════════════════════ */
-
-/* ── VARIÁVEIS (usando looks) ──────────────────────── */
-/* JavaFX não tem var(), então usamos valores diretos  */
 
 /* ── ROOT ─────────────────────────────────────────── */
 .root-pane {
@@ -679,4 +672,310 @@
     -fx-font-size: 11px;
     -fx-text-fill: #6b7280;
     -fx-font-family: "Courier New";
+}
+
+/* ── MATERIAIS / PDFs ─────────────────────────────── */
+.pdf-list {
+    -fx-padding: 10 16 12 16;
+    -fx-spacing: 6;
+}
+
+.pdf-item {
+    -fx-padding: 8 10 8 10;
+    -fx-background-radius: 8;
+    -fx-border-radius: 8;
+    -fx-border-color: rgba(255,255,255,0.06);
+    -fx-border-width: 1;
+    -fx-spacing: 8;
+    -fx-alignment: CENTER_LEFT;
+}
+
+.pdf-item:hover {
+    -fx-background-color: #1a1e2a;
+}
+
+.pdf-icon {
+    -fx-font-size: 16px;
+}
+
+.pdf-name {
+    -fx-font-size: 13px;
+    -fx-text-fill: #e8eaf0;
+}
+
+.empty-text {
+    -fx-font-size: 12px;
+    -fx-text-fill: #6b7280;
+}
+/* ═══════════════════════════════════════════════════════
+   styles_addons.css — Extensões para as novas abas
+   Adicione ao final do styles.css existente
+   ═══════════════════════════════════════════════════════ */
+
+/* ── FILTRO COMBO / SEARCH FIELD ─────────────────────── */
+.filter-combo {
+    -fx-background-color: #1a1e2a;
+    -fx-background-radius: 8;
+    -fx-border-color: rgba(255,255,255,0.1);
+    -fx-border-radius: 8;
+    -fx-border-width: 1;
+    -fx-text-fill: #e8eaf0;
+    -fx-font-size: 12px;
+    -fx-pref-height: 34;
+}
+
+.filter-combo .list-cell {
+    -fx-background-color: #1a1e2a;
+    -fx-text-fill: #e8eaf0;
+    -fx-font-size: 12px;
+}
+
+.filter-combo .list-view {
+    -fx-background-color: #1a1e2a;
+    -fx-border-color: rgba(255,255,255,0.12);
+}
+
+.search-field {
+    -fx-background-color: #1a1e2a;
+    -fx-background-radius: 8;
+    -fx-border-color: rgba(255,255,255,0.1);
+    -fx-border-radius: 8;
+    -fx-border-width: 1;
+    -fx-text-fill: #e8eaf0;
+    -fx-prompt-text-fill: #6b7280;
+    -fx-font-size: 13px;
+    -fx-padding: 6 12 6 12;
+    -fx-pref-height: 34;
+}
+
+.search-field:focused {
+    -fx-border-color: #4f9cf9;
+}
+
+/* ── FILTER PANEL ───────────────────────────────────── */
+.filter-panel {
+    -fx-background-color: #13161e;
+    -fx-border-color: rgba(79,156,249,0.15);
+    -fx-border-radius: 10;
+    -fx-border-width: 1;
+}
+
+/* ── BADGES ──────────────────────────────────────────── */
+.badge-neutral {
+    -fx-background-color: #222736;
+    -fx-text-fill: #9ca3af;
+    -fx-background-radius: 999;
+    -fx-padding: 3 10 3 10;
+    -fx-font-size: 11px;
+    -fx-font-family: "Courier New";
+}
+
+.badge-blue {
+    -fx-background-color: rgba(79,156,249,0.15);
+    -fx-text-fill: #4f9cf9;
+    -fx-background-radius: 999;
+    -fx-padding: 3 10 3 10;
+    -fx-font-size: 11px;
+    -fx-font-weight: bold;
+}
+
+/* Badges de questão */
+.badge-banca {
+    -fx-background-color: rgba(240,147,251,0.12);
+    -fx-text-fill: #f093fb;
+    -fx-background-radius: 999;
+    -fx-padding: 2 8 2 8;
+    -fx-font-size: 10px;
+    -fx-font-weight: bold;
+}
+
+.badge-ano {
+    -fx-background-color: rgba(56,217,169,0.12);
+    -fx-text-fill: #38d9a9;
+    -fx-background-radius: 999;
+    -fx-padding: 2 8 2 8;
+    -fx-font-size: 10px;
+    -fx-font-family: "Courier New";
+}
+
+.badge-tipo {
+    -fx-background-color: rgba(255,217,61,0.12);
+    -fx-text-fill: #ffd93d;
+    -fx-background-radius: 999;
+    -fx-padding: 2 8 2 8;
+    -fx-font-size: 10px;
+}
+
+/* ── BUTTONS PEQUENOS ────────────────────────────────── */
+.btn-ghost-sm {
+    -fx-background-color: transparent;
+    -fx-border-color: rgba(255,255,255,0.14);
+    -fx-border-radius: 6;
+    -fx-border-width: 1;
+    -fx-text-fill: #9ca3af;
+    -fx-font-size: 11px;
+    -fx-padding: 4 10 4 10;
+    -fx-cursor: hand;
+}
+
+.btn-ghost-sm:hover {
+    -fx-background-color: #1a1e2a;
+    -fx-text-fill: #e8eaf0;
+    -fx-border-color: rgba(255,255,255,0.2);
+}
+
+.btn-primary-sm {
+    -fx-background-color: #4f9cf9;
+    -fx-background-radius: 6;
+    -fx-text-fill: white;
+    -fx-font-size: 11px;
+    -fx-font-weight: bold;
+    -fx-padding: 4 12 4 12;
+    -fx-cursor: hand;
+    -fx-border-width: 0;
+}
+
+.btn-primary-sm:hover {
+    -fx-background-color: #3a8ae8;
+}
+
+/* ── STAT CARDS ADDONS ───────────────────────────────── */
+.stat-icon-badge {
+    -fx-font-size: 14px;
+    -fx-min-width: 28;
+    -fx-min-height: 28;
+    -fx-max-width: 28;
+    -fx-max-height: 28;
+    -fx-background-radius: 7;
+    -fx-alignment: CENTER;
+}
+
+.stat-badge-blue   { -fx-background-color: rgba(79,156,249,0.18); }
+.stat-badge-green  { -fx-background-color: rgba(56,217,169,0.18); }
+.stat-badge-yellow { -fx-background-color: rgba(255,217,61,0.18); }
+.stat-badge-purple { -fx-background-color: rgba(240,147,251,0.18); }
+
+.stat-delta {
+    -fx-font-size: 11px;
+    -fx-text-fill: #6b7280;
+    -fx-font-family: "Courier New";
+}
+
+.delta-up      { -fx-text-fill: #38d9a9; }
+.delta-down    { -fx-text-fill: #ff6b6b; }
+.delta-neutral { -fx-text-fill: #6b7280; }
+
+/* ── PROGRESS BARS LG ────────────────────────────────── */
+.prog-bar-lg {
+    -fx-pref-height: 8;
+    -fx-background-radius: 99;
+    -fx-border-radius: 99;
+}
+
+.prog-bar-lg > .track {
+    -fx-background-color: #222736;
+    -fx-background-radius: 99;
+}
+
+.prog-red > .bar { -fx-background-color: #ff6b6b; -fx-background-radius: 99; }
+
+/* ── CHART AREA ──────────────────────────────────────── */
+.chart-area {
+    -fx-padding: 0;
+    -fx-background-color: transparent;
+}
+
+/* ── PROGRESS RING LABELS ────────────────────────────── */
+.progress-ring-label {
+    -fx-font-size: 12px;
+    -fx-text-fill: #9ca3af;
+}
+
+.progress-ring-pct {
+    -fx-font-size: 13px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #e8eaf0;
+    -fx-font-family: "Courier New";
+}
+
+/* ── STAT MINI (Materiais) ───────────────────────────── */
+.stat-mini {
+    -fx-background-color: #13161e;
+    -fx-background-radius: 10;
+    -fx-border-color: rgba(255,255,255,0.06);
+    -fx-border-radius: 10;
+    -fx-border-width: 1;
+    -fx-padding: 12 14 12 14;
+    -fx-spacing: 4;
+}
+
+.stat-mini-label {
+    -fx-font-size: 9px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #6b7280;
+    -fx-font-family: "Courier New";
+}
+
+.stat-mini-value {
+    -fx-font-size: 22px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #e8eaf0;
+    -fx-font-family: "Courier New";
+}
+
+/* ── MATERIAL CARD (grade) ───────────────────────────── */
+.material-card {
+    -fx-background-color: #13161e;
+    -fx-background-radius: 12;
+    -fx-border-color: rgba(255,255,255,0.07);
+    -fx-border-radius: 12;
+    -fx-border-width: 1;
+    -fx-padding: 14;
+    -fx-spacing: 8;
+    -fx-alignment: CENTER;
+}
+
+.material-card:hover {
+    -fx-background-color: #1a1e2a;
+    -fx-border-color: rgba(79,156,249,0.3);
+}
+
+/* ── VIEW TOGGLE BUTTON GROUP ────────────────────────── */
+.view-toggle {
+    -fx-background-color: #1a1e2a;
+    -fx-background-radius: 8;
+    -fx-border-color: rgba(255,255,255,0.1);
+    -fx-border-radius: 8;
+    -fx-border-width: 1;
+}
+
+.view-toggle-btn {
+    -fx-background-color: transparent;
+    -fx-border-width: 0;
+    -fx-text-fill: #6b7280;
+    -fx-font-size: 15px;
+    -fx-padding: 5 10 5 10;
+    -fx-cursor: hand;
+    -fx-background-radius: 7;
+}
+
+.view-toggle-btn:hover {
+    -fx-background-color: rgba(255,255,255,0.05);
+    -fx-text-fill: #e8eaf0;
+}
+
+.view-toggle-active {
+    -fx-background-color: #4f9cf9;
+    -fx-text-fill: white;
+}
+
+.view-toggle-active:hover {
+    -fx-background-color: #3a8ae8;
+    -fx-text-fill: white;
+}
+
+/* ── EMPTY STATE ──────────────────────────────────────── */
+.empty-icon {
+    -fx-font-size: 48px;
+    -fx-alignment: CENTER;
 }

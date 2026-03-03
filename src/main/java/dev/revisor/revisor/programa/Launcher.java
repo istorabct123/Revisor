@@ -1,4 +1,4 @@
-package dev.revisor.revisor;
+package dev.revisor.revisor.programa;
 
 import javafx.application.Application;
 
