@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.FlowPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Region?>
+<?import javafx.scene.layout.VBox?>
+
+<VBox xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="dev.revisor.revisor.controller.MateriaisViewController">
+
+    <!-- TOPBAR -->
+    <HBox alignment="CENTER_LEFT" spacing="12" styleClass="topbar">
+        <Label styleClass="page-title" text="Materiais" />
+        <Region HBox.hgrow="ALWAYS" />
+        <Label fx:id="lblTotalArquivos" styleClass="badge-neutral" text="0 arquivos" />
+        <Button onAction="#onImportPdf" styleClass="btn-primary" text="📂  Importar PDF" />
+    </HBox>
+
+    <ScrollPane fitToWidth="true" styleClass="content-scroll" VBox.vgrow="ALWAYS">
+        <VBox spacing="16" styleClass="content-area">
+            <padding><Insets bottom="24" left="20" right="20" top="20" /></padding>
+
+            <!-- ── FILTRO + MODO DE EXIBIÇÃO ─────────────────────────── -->
+            <HBox spacing="10" alignment="CENTER_LEFT">
+                <TextField fx:id="campoBuscaMaterial"
+                           promptText="🔍  Buscar material..."
+                           styleClass="search-field"
+                           prefWidth="280" />
+                <ComboBox fx:id="filtroMateriaMat"
+                          promptText="Todas as matérias"
+                          styleClass="filter-combo"
+                          prefWidth="200" />
+                <Region HBox.hgrow="ALWAYS" />
+                <!-- Toggle Grade/Lista -->
+                <HBox styleClass="view-toggle" spacing="0">
+                    <Button fx:id="btnGrade" onAction="#onModoGrade"
+                            styleClass="view-toggle-btn view-toggle-active" text="⊞" />
+                    <Button fx:id="btnLista" onAction="#onModoLista"
+                            styleClass="view-toggle-btn" text="≡" />
+                </HBox>
+            </HBox>
+
+            <!-- ── ESTATÍSTICAS RÁPIDAS (monitoramento do banco) ─────────── -->
+            <HBox spacing="10">
+                <VBox styleClass="stat-mini" HBox.hgrow="ALWAYS">
+                    <Label styleClass="stat-mini-label" text="TOTAL DE ARQUIVOS" />
+                    <Label fx:id="statArquivos" styleClass="stat-mini-value" text="0" />
+                </VBox>
+                <VBox styleClass="stat-mini" HBox.hgrow="ALWAYS">
+                    <Label styleClass="stat-mini-label" text="QUESTÕES NO BANCO" />
+                    <Label fx:id="statQuestoes" styleClass="stat-mini-value" text="0" />
+                </VBox>
+                <VBox styleClass="stat-mini" HBox.hgrow="ALWAYS">
+                    <Label styleClass="stat-mini-label" text="TAMANHO TOTAL" />
+                    <Label fx:id="statTamanho" styleClass="stat-mini-value" text="0 MB" />
+                </VBox>
+                <VBox styleClass="stat-mini" HBox.hgrow="ALWAYS">
+                    <Label styleClass="stat-mini-label" text="MATÉRIAS COBERTAS" />
+                    <Label fx:id="statMaterias" styleClass="stat-mini-value" text="0" />
+                </VBox>
+            </HBox>
+            <!-- Dica quando o banco de questões está vazio -->
+            <HBox fx:id="boxDicaQuestoes" alignment="CENTER_LEFT" spacing="8"
+                  style="-fx-padding: 8 14 8 14; -fx-background-color: rgba(79,156,249,0.08); -fx-background-radius: 8;">
+                <Label style="-fx-text-fill: #4f9cf9; -fx-font-size: 12px;" text="💡" />
+                <Label style="-fx-text-fill: #9ca3af; -fx-font-size: 12px;" wrapText="true"
+                       text="Para alimentar o banco de questões: clique em 'Extrair questões' em cada PDF abaixo. Depois veja as questões na aba Questões." />
+            </HBox>
+
+            <!-- ── GRADE DE MATERIAIS ────────────────────────────────── -->
+            <FlowPane fx:id="gradeContainer"
+                      hgap="14" vgap="14"
+                      prefWrapLength="9999" />
+
+            <!-- ── LISTA DE MATERIAIS (alternativa) ──────────────────── -->
+            <VBox fx:id="listaContainer" spacing="8" />
+
+            <!-- Estado vazio -->
+            <VBox fx:id="emptyMateriais" alignment="CENTER" spacing="16"
+                  style="-fx-padding: 60 0 60 0;">
+                <Label style="-fx-font-size: 48px;" text="📚" />
+                <Label styleClass="card-title" text="Nenhum material importado ainda" />
+                <Label styleClass="empty-text"
+                       text="Importe um PDF para começar a extrair questões automaticamente."
+                       wrapText="true" />
+                <Button onAction="#onImportPdf" styleClass="btn-primary"
+                        text="📂  Importar primeiro PDF" />
+            </VBox>
+
+        </VBox>
+    </ScrollPane>
+</VBox>

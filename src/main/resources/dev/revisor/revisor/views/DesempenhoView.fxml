@@ -1,0 +1,213 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ProgressBar?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Region?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.shape.Arc?>
+<?import javafx.scene.shape.Circle?>
+<?import javafx.scene.shape.Rectangle?>
+
+<VBox xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="dev.revisor.revisor.controller.DesempenhoViewController">
+
+    <!-- TOPBAR -->
+    <HBox alignment="CENTER_LEFT" spacing="12" styleClass="topbar">
+        <Label styleClass="page-title" text="Desempenho" />
+        <HBox spacing="4" styleClass="tab-bar">
+            <Label fx:id="tabGeral"   onMouseClicked="#onTabGeral"   styleClass="tab tab-active" text="Geral" />
+            <Label fx:id="tabSemana"  onMouseClicked="#onTabSemana"  styleClass="tab"            text="Semana" />
+            <Label fx:id="tabMateria" onMouseClicked="#onTabMateria" styleClass="tab"            text="Por Matéria" />
+        </HBox>
+        <Region HBox.hgrow="ALWAYS" />
+        <ComboBox fx:id="filtroPeriodo" promptText="Últimos 30 dias" styleClass="filter-combo" prefWidth="160" />
+        <Button onAction="#onExportar" styleClass="btn-ghost" text="↓  Exportar" />
+    </HBox>
+
+    <ScrollPane fitToWidth="true" styleClass="content-scroll" VBox.vgrow="ALWAYS">
+        <VBox spacing="16" styleClass="content-area">
+            <padding><Insets bottom="24" left="20" right="20" top="20" /></padding>
+
+            <!-- ── BLOCO 1: KPIs principais ──────────────────────────── -->
+            <HBox spacing="12">
+
+                <!-- Questões resolvidas -->
+                <VBox styleClass="stat-card stat-blue" HBox.hgrow="ALWAYS">
+                    <HBox alignment="CENTER_LEFT" spacing="8">
+                        <Label styleClass="stat-icon-badge stat-badge-blue" text="✏" />
+                        <Label styleClass="stat-label" text="QUESTÕES RESOLVIDAS" />
+                    </HBox>
+                    <Label fx:id="kpiQuestoes" styleClass="stat-value stat-value-blue" text="0" />
+                    <HBox alignment="CENTER_LEFT" spacing="6">
+                        <Label fx:id="kpiQuestoesDelta" styleClass="stat-delta delta-up" text="+0 hoje" />
+                    </HBox>
+                </VBox>
+
+                <!-- Taxa de acerto -->
+                <VBox styleClass="stat-card stat-green" HBox.hgrow="ALWAYS">
+                    <HBox alignment="CENTER_LEFT" spacing="8">
+                        <Label styleClass="stat-icon-badge stat-badge-green" text="✓" />
+                        <Label styleClass="stat-label" text="TAXA DE ACERTO" />
+                    </HBox>
+                    <Label fx:id="kpiAcerto" styleClass="stat-value stat-value-green" text="0%" />
+                    <HBox alignment="CENTER_LEFT" spacing="6">
+                        <Label fx:id="kpiAcertoDelta" styleClass="stat-delta delta-up" text="↑ vs semana passada" />
+                    </HBox>
+                </VBox>
+
+                <!-- Sequência -->
+                <VBox styleClass="stat-card stat-yellow" HBox.hgrow="ALWAYS">
+                    <HBox alignment="CENTER_LEFT" spacing="8">
+                        <Label styleClass="stat-icon-badge stat-badge-yellow" text="🔥" />
+                        <Label styleClass="stat-label" text="SEQUÊNCIA ATUAL" />
+                    </HBox>
+                    <Label fx:id="kpiSequencia" styleClass="stat-value stat-value-yellow" text="0d" />
+                    <Label fx:id="kpiRecorde" styleClass="stat-delta" text="Recorde: 0 dias" />
+                </VBox>
+
+                <!-- Horas estudadas -->
+                <VBox styleClass="stat-card stat-purple" HBox.hgrow="ALWAYS">
+                    <HBox alignment="CENTER_LEFT" spacing="8">
+                        <Label styleClass="stat-icon-badge stat-badge-purple" text="⏱" />
+                        <Label styleClass="stat-label" text="HORAS ESTUDADAS" />
+                    </HBox>
+                    <Label fx:id="kpiHoras" styleClass="stat-value stat-value-purple" text="0h" />
+                    <Label fx:id="kpiMetaHoras" styleClass="stat-delta" text="Meta mensal: 0h" />
+                </VBox>
+
+            </HBox>
+
+            <!-- ── BLOCO 2: Gráfico semanal + Distribuição acertos ── -->
+            <HBox spacing="12" alignment="TOP_LEFT">
+
+                <!-- Atividade semanal (barras simuladas via VBox empilhados) -->
+                <VBox styleClass="card" HBox.hgrow="ALWAYS">
+                    <HBox alignment="CENTER_LEFT" spacing="8" styleClass="card-header">
+                        <Label styleClass="card-icon" text="📈" />
+                        <Label styleClass="card-title" text="Atividade dos Últimos 7 Dias" />
+                        <Region HBox.hgrow="ALWAYS" />
+                        <Label fx:id="lblMediaDiaria" styleClass="badge-neutral" text="Média: 0 questões/dia" />
+                    </HBox>
+                    <VBox styleClass="chart-area">
+                        <padding><Insets bottom="16" left="18" right="18" top="12" /></padding>
+                        <!-- Barras geradas pelo controller via fx:id -->
+                        <HBox fx:id="barChartBox" alignment="BOTTOM_CENTER" spacing="8"
+                              prefHeight="120" minHeight="120" />
+                        <HBox fx:id="barLabelsBox" alignment="CENTER" spacing="8" />
+                    </VBox>
+                </VBox>
+
+                <!-- Pizza / distribuição certo/errado por matéria -->
+                <VBox styleClass="card" prefWidth="310">
+                    <HBox alignment="CENTER_LEFT" spacing="8" styleClass="card-header">
+                        <Label styleClass="card-icon" text="🎯" />
+                        <Label styleClass="card-title" text="Distribuição de Acertos" />
+                    </HBox>
+                    <VBox spacing="0" fx:id="distribuicaoBox">
+                        <padding><Insets bottom="12" left="18" right="18" top="8" /></padding>
+                        <!-- itens gerados pelo controller -->
+                    </VBox>
+                </VBox>
+
+            </HBox>
+
+            <!-- ── BLOCO 3: Desempenho por matéria ──────────────────── -->
+            <VBox styleClass="card">
+                <HBox alignment="CENTER_LEFT" spacing="8" styleClass="card-header">
+                    <Label styleClass="card-icon" text="📋" />
+                    <Label styleClass="card-title" text="Desempenho por Matéria" />
+                    <Region HBox.hgrow="ALWAYS" />
+                    <Label styleClass="badge-neutral" fx:id="lblTotalMaterias" text="0 matérias" />
+                </HBox>
+
+                <HBox spacing="0" styleClass="table-header">
+                    <Label prefWidth="200" styleClass="th" text="MATÉRIA" />
+                    <Label prefWidth="110" styleClass="th" text="QUESTÕES" />
+                    <Label prefWidth="90"  styleClass="th" text="ACERTOS" />
+                    <Label prefWidth="90"  styleClass="th" text="ERROS" />
+                    <Label styleClass="th" text="PROGRESSO" HBox.hgrow="ALWAYS" />
+                    <Label prefWidth="60"  styleClass="th" text="TAXA" />
+                </HBox>
+
+                <VBox fx:id="tabelaMaterias" spacing="0" />
+
+                <!-- Estado vazio -->
+                <VBox fx:id="emptyMaterias" alignment="CENTER" spacing="8" prefHeight="80" style="-fx-padding: 20;">
+                    <Label styleClass="empty-text" text="Nenhuma matéria com questões respondidas ainda." />
+                </VBox>
+            </VBox>
+
+            <!-- ── BLOCO 4: Planejamento / progresso de metas ──────── -->
+            <HBox spacing="12" alignment="TOP_LEFT">
+
+                <!-- Meta semanal -->
+                <VBox styleClass="card" HBox.hgrow="ALWAYS">
+                    <HBox alignment="CENTER_LEFT" spacing="8" styleClass="card-header">
+                        <Label styleClass="card-icon" text="🗓" />
+                        <Label styleClass="card-title" text="Metas da Semana" />
+                        <Region HBox.hgrow="ALWAYS" />
+                        <Button onAction="#onEditarMetas" styleClass="btn-ghost-sm" text="Editar" />
+                    </HBox>
+                    <VBox fx:id="metasBox" spacing="0">
+                        <padding><Insets bottom="12" left="0" right="0" top="4" /></padding>
+                    </VBox>
+                </VBox>
+
+                <!-- Progresso do concurso (timeline) -->
+                <VBox styleClass="card" prefWidth="320">
+                    <HBox alignment="CENTER_LEFT" spacing="8" styleClass="card-header">
+                        <Label styleClass="card-icon" text="🏁" />
+                        <Label styleClass="card-title" text="Progresso Geral" />
+                    </HBox>
+                    <VBox spacing="12" style="-fx-padding: 12 18 16 18;">
+                        <HBox alignment="CENTER_LEFT" spacing="10">
+                            <Label styleClass="progress-ring-label" text="Questões realizadas" />
+                            <Region HBox.hgrow="ALWAYS" />
+                            <Label fx:id="lblPctQuestoes" styleClass="progress-ring-pct" text="0%" />
+                        </HBox>
+                        <ProgressBar fx:id="progQuestoes" maxWidth="Infinity" progress="0"
+                                     styleClass="prog-bar prog-bar-lg prog-blue" />
+
+                        <HBox alignment="CENTER_LEFT" spacing="10">
+                            <Label styleClass="progress-ring-label" text="Meta de horas" />
+                            <Region HBox.hgrow="ALWAYS" />
+                            <Label fx:id="lblPctHoras" styleClass="progress-ring-pct" text="0%" />
+                        </HBox>
+                        <ProgressBar fx:id="progHoras" maxWidth="Infinity" progress="0"
+                                     styleClass="prog-bar prog-bar-lg prog-purple" />
+
+                        <HBox alignment="CENTER_LEFT" spacing="10">
+                            <Label styleClass="progress-ring-label" text="Taxa de acerto alvo (70%)" />
+                            <Region HBox.hgrow="ALWAYS" />
+                            <Label fx:id="lblPctAcertoAlvo" styleClass="progress-ring-pct" text="0%" />
+                        </HBox>
+                        <ProgressBar fx:id="progAcertoAlvo" maxWidth="Infinity" progress="0"
+                                     styleClass="prog-bar prog-bar-lg prog-green" />
+                    </VBox>
+                </VBox>
+
+            </HBox>
+
+            <!-- ── BLOCO 5: Histórico recente ────────────────────────── -->
+            <VBox styleClass="card">
+                <HBox alignment="CENTER_LEFT" spacing="8" styleClass="card-header">
+                    <Label styleClass="card-icon" text="🕐" />
+                    <Label styleClass="card-title" text="Histórico Recente" />
+                    <Region HBox.hgrow="ALWAYS" />
+                    <Label onMouseClicked="#onVerTodoHistorico" styleClass="card-action" text="Ver tudo →" />
+                </HBox>
+                <VBox fx:id="historicoBox" spacing="0" />
+                <VBox fx:id="emptyHistorico" alignment="CENTER" prefHeight="60" style="-fx-padding: 16;">
+                    <Label styleClass="empty-text" text="Nenhuma atividade registrada ainda." />
+                </VBox>
+            </VBox>
+
+        </VBox>
+    </ScrollPane>
+</VBox>

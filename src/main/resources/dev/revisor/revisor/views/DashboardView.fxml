@@ -1,0 +1,157 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ProgressBar?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Region?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.shape.Rectangle?>
+
+<VBox xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="dev.revisor.revisor.controller.DashboardViewController">
+    <!-- TOPBAR -->
+    <HBox alignment="CENTER_LEFT" spacing="12" styleClass="topbar">
+        <Label styleClass="page-title" text="Dashboard" />
+        <HBox spacing="4" styleClass="tab-bar">
+            <Label fx:id="tabGeral" onMouseClicked="#onTabGeral" styleClass="tab tab-active" text="Visão Geral" />
+            <Label fx:id="tabSemana" onMouseClicked="#onTabSemana" styleClass="tab" text="Esta Semana" />
+        </HBox>
+        <Label fx:id="tabMateria" onMouseClicked="#onTabMateria" styleClass="tab" text="Por Matéria" />
+        <Region HBox.hgrow="ALWAYS" />
+        <Button onAction="#onImportPdf" styleClass="btn-ghost" text="📂  Importar PDF" />
+        <Button onAction="#onNewQuestion" styleClass="btn-primary" text="＋  Nova Questão" />
+    </HBox>
+
+    <!-- SCROLLABLE CONTENT -->
+    <ScrollPane fitToWidth="true" styleClass="content-scroll" VBox.vgrow="ALWAYS">
+        <VBox spacing="16" styleClass="content-area">
+            <padding><Insets bottom="20" left="20" right="20" top="20" /></padding>
+
+            <HBox spacing="12">
+                <VBox styleClass="stat-card stat-blue" HBox.hgrow="ALWAYS">
+                    <Label styleClass="stat-label" text="QUESTÕES RESOLVIDAS" />
+                    <Label fx:id="statQuestoes" styleClass="stat-value stat-value-blue" text="1.247" />
+                    <Label styleClass="stat-sub" text="+34 hoje" />
+                </VBox>
+                <VBox styleClass="stat-card stat-green" HBox.hgrow="ALWAYS">
+                    <Label styleClass="stat-label" text="TAXA DE ACERTOS" />
+                    <Label fx:id="statAcertos" styleClass="stat-value stat-value-green" text="68%" />
+                    <Label styleClass="stat-sub" text="↑ 4% vs semana passada" />
+                </VBox>
+                <VBox styleClass="stat-card stat-purple" HBox.hgrow="ALWAYS">
+                    <Label styleClass="stat-label" text="HORAS ESTUDADAS" />
+                    <Label fx:id="statHoras" styleClass="stat-value stat-value-purple" text="142h" />
+                    <Label styleClass="stat-sub" text="Meta: 200h no mês" />
+                </VBox>
+                <VBox styleClass="stat-card stat-yellow" HBox.hgrow="ALWAYS">
+                    <Label styleClass="stat-label" text="SEQUÊNCIA ATUAL" />
+                    <Label fx:id="statSequencia" styleClass="stat-value stat-value-yellow" text="14d" />
+                    <Label styleClass="stat-sub" text="🔥 Recorde: 21 dias" />
+                </VBox>
+            </HBox>
+
+            <HBox alignment="TOP_LEFT" spacing="16">
+                <VBox spacing="16" HBox.hgrow="ALWAYS">
+                    <VBox styleClass="card">
+                        <HBox alignment="CENTER_LEFT" spacing="8" styleClass="card-header">
+                            <Label styleClass="card-icon" text="📋" />
+                            <Label styleClass="card-title" text="Desempenho por Matéria" />
+                            <Region HBox.hgrow="ALWAYS" />
+                            <Label onMouseClicked="#onVerDesempenho" styleClass="card-action" text="Ver tudo →" />
+                        </HBox>
+                        <HBox spacing="0" styleClass="table-header">
+                            <Label prefWidth="190" styleClass="th" text="Matéria" />
+                            <Label prefWidth="100" styleClass="th" text="Questões" />
+                            <Label prefWidth="80" styleClass="th" text="Acertos" />
+                            <Label styleClass="th" text="Progresso" HBox.hgrow="ALWAYS" />
+                        </HBox>
+                        <HBox alignment="CENTER_LEFT" spacing="0" styleClass="table-row">
+                            <HBox alignment="CENTER_LEFT" prefWidth="190" spacing="8" style="-fx-padding: 0 0 0 14;">
+                                <Rectangle arcHeight="3" arcWidth="3" fill="#4f9cf9" height="10" width="10" />
+                                <Label styleClass="row-name" text="Direito Civil" />
+                            </HBox>
+                            <Label prefWidth="100" styleClass="row-count" text="342 questões" />
+                            <Label prefWidth="80" styleClass="row-score score-mid" text="68%" />
+                            <ProgressBar maxWidth="Infinity" progress="0.72" styleClass="prog-bar prog-blue" HBox.hgrow="ALWAYS" />
+                        </HBox>
+                        <HBox alignment="CENTER_LEFT" spacing="0" styleClass="table-row">
+                            <HBox alignment="CENTER_LEFT" prefWidth="190" spacing="8" style="-fx-padding: 0 0 0 14;">
+                                <Rectangle arcHeight="3" arcWidth="3" fill="#38d9a9" height="10" width="10" />
+                                <Label styleClass="row-name" text="Constitucional" />
+                            </HBox>
+                            <Label prefWidth="100" styleClass="row-count" text="218 questões" />
+                            <Label prefWidth="80" styleClass="row-score score-high" text="85%" />
+                            <ProgressBar maxWidth="Infinity" progress="0.85" styleClass="prog-bar prog-green" HBox.hgrow="ALWAYS" />
+                        </HBox>
+                        <HBox alignment="CENTER_LEFT" spacing="0" styleClass="table-row">
+                            <HBox alignment="CENTER_LEFT" prefWidth="190" spacing="8" style="-fx-padding: 0 0 0 14;">
+                                <Rectangle arcHeight="3" arcWidth="3" fill="#f093fb" height="10" width="10" />
+                                <Label styleClass="row-name" text="Administrativo" />
+                            </HBox>
+                            <Label prefWidth="100" styleClass="row-count" text="189 questões" />
+                            <Label prefWidth="80" styleClass="row-score score-mid" text="61%" />
+                            <ProgressBar maxWidth="Infinity" progress="0.44" styleClass="prog-bar prog-purple" HBox.hgrow="ALWAYS" />
+                        </HBox>
+                        <HBox alignment="CENTER_LEFT" spacing="0" styleClass="table-row">
+                            <HBox alignment="CENTER_LEFT" prefWidth="190" spacing="8" style="-fx-padding: 0 0 0 14;">
+                                <Rectangle arcHeight="3" arcWidth="3" fill="#ffd93d" height="10" width="10" />
+                                <Label styleClass="row-name" text="Penal" />
+                            </HBox>
+                            <Label prefWidth="100" styleClass="row-count" text="97 questões" />
+                            <Label prefWidth="80" styleClass="row-score score-low" text="42%" />
+                            <ProgressBar maxWidth="Infinity" progress="0.31" styleClass="prog-bar prog-yellow" HBox.hgrow="ALWAYS" />
+                        </HBox>
+                    </VBox>
+
+                    <VBox styleClass="card">
+                        <HBox alignment="CENTER_LEFT" spacing="8" styleClass="card-header">
+                            <Label styleClass="card-icon" text="✏" />
+                            <Label styleClass="card-title" text="Questão do Dia · Direito Civil" />
+                            <Region HBox.hgrow="ALWAYS" />
+                            <Label styleClass="question-counter" text="38/50" />
+                            <Label onMouseClicked="#onNextQuestion" styleClass="card-action" text="próxima →" />
+                        </HBox>
+                        <VBox spacing="12" styleClass="question-body">
+                            <Label styleClass="q-meta" text="VUNESP · 2023 · Múltipla Escolha" />
+                            <Label styleClass="q-text" text="Sobre a capacidade civil das pessoas naturais, conforme o Código Civil Brasileiro, é correto afirmar que:" wrapText="true" />
+                            <VBox fx:id="optionsBox" spacing="6">
+                                <HBox fx:id="opt1" alignment="CENTER_LEFT" onMouseClicked="#onOption1" spacing="10" styleClass="q-option">
+                                    <Label styleClass="opt-letter" text="A" />
+                                    <Label styleClass="opt-text" text="A capacidade de fato coincide necessariamente com a capacidade de direito." wrapText="true" HBox.hgrow="ALWAYS" />
+                                </HBox>
+                                <HBox fx:id="opt2" alignment="CENTER_LEFT" onMouseClicked="#onOption2" spacing="10" styleClass="q-option">
+                                    <Label styleClass="opt-letter" text="B" />
+                                    <Label styleClass="opt-text" text="Os menores de 16 anos são absolutamente incapazes de exercer pessoalmente os atos da vida civil." wrapText="true" HBox.hgrow="ALWAYS" />
+                                </HBox>
+                                <HBox fx:id="opt3" alignment="CENTER_LEFT" onMouseClicked="#onOption3" spacing="10" styleClass="q-option">
+                                    <Label styleClass="opt-letter" text="C" />
+                                    <Label styleClass="opt-text" text="A emancipação voluntária exige apenas a manifestação de vontade do menor." wrapText="true" HBox.hgrow="ALWAYS" />
+                                </HBox>
+                                <HBox fx:id="opt4" alignment="CENTER_LEFT" onMouseClicked="#onOption4" spacing="10" styleClass="q-option">
+                                    <Label styleClass="opt-letter" text="D" />
+                                    <Label styleClass="opt-text" text="O pródigo é considerado absolutamente incapaz para todos os atos civis." wrapText="true" HBox.hgrow="ALWAYS" />
+                                </HBox>
+                            </VBox>
+                            <HBox spacing="8">
+                                <Button maxWidth="Infinity" onAction="#onConfirmAnswer" styleClass="btn-primary" text="Confirmar Resposta" HBox.hgrow="ALWAYS" />
+                                <Button onAction="#onSaveQuestion" styleClass="btn-ghost" text="🔖 Salvar" />
+                                <Button onAction="#onReportQuestion" styleClass="btn-ghost" text="⚑ Reportar" />
+                            </HBox>
+                        </VBox>
+                    </VBox>
+                </VBox>
+                <VBox prefWidth="320" spacing="16">
+                    <VBox styleClass="card" />
+                    <VBox styleClass="card">
+                        <VBox fx:id="taskList" styleClass="task-list" />
+                    </VBox>
+                    <VBox styleClass="card">
+                        <VBox />
+                    </VBox>
+                </VBox>
+            </HBox>
+        </VBox>
+    </ScrollPane>
+</VBox>

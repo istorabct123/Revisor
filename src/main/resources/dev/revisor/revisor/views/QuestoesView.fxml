@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Region?>
+<?import javafx.scene.layout.VBox?>
+
+<VBox xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="dev.revisor.revisor.controller.QuestoesViewController">
+
+    <!-- TOPBAR -->
+    <HBox alignment="CENTER_LEFT" spacing="12" styleClass="topbar">
+        <Label styleClass="page-title" text="Questões" />
+        <Region HBox.hgrow="ALWAYS" />
+        <Label fx:id="lblTotalBanco" styleClass="badge-neutral" text="Banco: 0" />
+        <Label fx:id="lblContador" styleClass="badge-blue" text="Exibidas: 0" />
+        <Button onAction="#onNovaQuestao" styleClass="btn-primary" text="＋  Nova Questão" />
+    </HBox>
+
+    <ScrollPane fitToWidth="true" styleClass="content-scroll" VBox.vgrow="ALWAYS">
+        <VBox spacing="14" styleClass="content-area">
+            <padding><Insets bottom="24" left="20" right="20" top="20" /></padding>
+
+            <!-- ── PAINEL DE FILTROS ─────────────────────────────────── -->
+            <VBox styleClass="card filter-panel">
+                <HBox alignment="CENTER_LEFT" spacing="8" styleClass="card-header">
+                    <Label styleClass="card-icon" text="🔍" />
+                    <Label styleClass="card-title" text="Filtros" />
+                    <Region HBox.hgrow="ALWAYS" />
+                    <Label fx:id="lblFiltrosAtivos" styleClass="badge-blue" text="" />
+                    <Button onAction="#onLimparFiltros" styleClass="btn-ghost-sm" text="✕  Limpar" />
+                </HBox>
+
+                <!-- Linha 1: busca textual + matéria + assunto -->
+                <HBox spacing="10" style="-fx-padding: 0 16 10 16;">
+                    <TextField fx:id="campoBusca"
+                               promptText="🔍  Buscar no enunciado..."
+                               styleClass="search-field"
+                               HBox.hgrow="ALWAYS" />
+                    <ComboBox fx:id="filtroMateria"
+                              promptText="Todas as matérias"
+                              styleClass="filter-combo"
+                              prefWidth="200" />
+                    <ComboBox fx:id="filtroAssunto"
+                              promptText="Todos os assuntos"
+                              styleClass="filter-combo"
+                              prefWidth="180" />
+                </HBox>
+
+                <!-- Linha 2: banca + ano + tipo + dificuldade + salvas -->
+                <HBox spacing="10" style="-fx-padding: 0 16 14 16;">
+                    <ComboBox fx:id="filtroBanca"
+                              promptText="Banca"
+                              styleClass="filter-combo"
+                              prefWidth="140" />
+                    <ComboBox fx:id="filtroAno"
+                              promptText="Ano"
+                              styleClass="filter-combo"
+                              prefWidth="100" />
+                    <ComboBox fx:id="filtroTipo"
+                              promptText="Tipo"
+                              styleClass="filter-combo"
+                              prefWidth="160" />
+                    <Region HBox.hgrow="ALWAYS" />
+                    <Button fx:id="btnSoSalvas"
+                            onAction="#onToggleSalvas"
+                            styleClass="btn-ghost-sm"
+                            text="🔖  Salvas" />
+                    <Button onAction="#onAplicarFiltros"
+                            styleClass="btn-primary"
+                            text="Aplicar filtros" />
+                </HBox>
+            </VBox>
+
+            <!-- ── CHIPS DE FILTROS ATIVOS ────────────────────────────── -->
+            <HBox fx:id="chipsAtivos" spacing="6" alignment="CENTER_LEFT"
+                  style="-fx-padding: 0 2 0 2;" />
+
+            <!-- ── LISTA DE QUESTÕES ──────────────────────────────────── -->
+            <VBox fx:id="listaQuestoes" spacing="10" />
+
+            <!-- Estado vazio -->
+            <VBox fx:id="emptyState" alignment="CENTER" spacing="12"
+                  style="-fx-padding: 48 0 48 0;">
+                <Label styleClass="empty-icon" text="📭" />
+                <Label fx:id="lblEmptyTitulo" styleClass="card-title" text="Nenhuma questão encontrada" />
+                <Label fx:id="lblEmptyTexto" styleClass="empty-text" wrapText="true"
+                       text="Tente ajustar os filtros ou importe um PDF com questões." />
+                <Button onAction="#onImportarPdf" styleClass="btn-primary" text="📂  Ir para Materiais" />
+            </VBox>
+
+        </VBox>
+    </ScrollPane>
+</VBox>

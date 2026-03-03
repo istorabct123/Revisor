@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Region?>
+<?import javafx.scene.layout.VBox?>
+
+<VBox xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1">
+    <HBox alignment="CENTER_LEFT" spacing="12" styleClass="topbar">
+        <Label styleClass="page-title" text="Revisões" />
+        <Region HBox.hgrow="ALWAYS" />
+    </HBox>
+    <VBox alignment="CENTER" spacing="16" styleClass="content-area" VBox.vgrow="ALWAYS">
+        <padding><Insets bottom="20" left="20" right="20" top="20" /></padding>
+        <Label styleClass="card-title" text="🔖 Revisões programadas" />
+        <Label style="-fx-text-fill: #888; -fx-font-size: 14px;" text="Questões e conteúdos para revisar." wrapText="true" />
+    </VBox>
+</VBox>

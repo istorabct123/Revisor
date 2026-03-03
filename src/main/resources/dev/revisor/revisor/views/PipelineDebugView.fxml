@@ -1,0 +1,192 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Region?>
+<?import javafx.scene.layout.VBox?>
+
+<VBox xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="dev.revisor.revisor.controller.PipelineDebugController">
+
+    <!-- TOPBAR -->
+    <HBox alignment="CENTER_LEFT" spacing="12" styleClass="topbar">
+        <Label styleClass="page-title" text="🔬 Pipeline Debug" />
+        <Region HBox.hgrow="ALWAYS" />
+        <Label fx:id="lblArquivoSelecionado"
+               style="-fx-text-fill: #6b7280; -fx-font-size: 12px; -fx-font-family: 'Courier New';"
+               text="Nenhum arquivo selecionado" />
+        <Button onAction="#onSelecionarPdf" styleClass="btn-primary" text="📂  Selecionar PDF" />
+    </HBox>
+
+    <ScrollPane fitToWidth="true" styleClass="content-scroll" VBox.vgrow="ALWAYS">
+        <VBox spacing="16" styleClass="content-area">
+            <padding><Insets bottom="24" left="20" right="20" top="20" /></padding>
+
+            <!-- ══ STEPPER ══════════════════════════════════════════ -->
+            <HBox alignment="CENTER" spacing="0">
+
+                <!-- Step 1 -->
+                <VBox fx:id="step1Box" alignment="CENTER" spacing="4" styleClass="step-box step-active">
+                    <Label fx:id="step1Num" styleClass="step-num step-num-active" text="1" />
+                    <Label styleClass="step-label" text="Extração" />
+                    <Label styleClass="step-sub" text="PDF → Texto" />
+                </VBox>
+
+                <!-- Connector -->
+                <Region fx:id="connector1" styleClass="step-connector" prefWidth="80" prefHeight="2" />
+
+                <!-- Step 2 -->
+                <VBox fx:id="step2Box" alignment="CENTER" spacing="4" styleClass="step-box step-pending">
+                    <Label fx:id="step2Num" styleClass="step-num step-num-pending" text="2" />
+                    <Label styleClass="step-label" text="Parser" />
+                    <Label styleClass="step-sub" text="Texto → Questões" />
+                </VBox>
+
+                <!-- Connector -->
+                <Region fx:id="connector2" styleClass="step-connector" prefWidth="80" prefHeight="2" />
+
+                <!-- Step 3 -->
+                <VBox fx:id="step3Box" alignment="CENTER" spacing="4" styleClass="step-box step-pending">
+                    <Label fx:id="step3Num" styleClass="step-num step-num-pending" text="3" />
+                    <Label styleClass="step-label" text="Salvar" />
+                    <Label styleClass="step-sub" text="Questões → Banco" />
+                </VBox>
+
+            </HBox>
+
+            <!-- ══ ETAPA 1 — EXTRAÇÃO ════════════════════════════════ -->
+            <VBox fx:id="panelEtapa1" styleClass="card pipeline-panel">
+                <HBox alignment="CENTER_LEFT" spacing="10" styleClass="card-header">
+                    <Label styleClass="step-badge step-badge-blue" text="1" />
+                    <VBox spacing="2">
+                        <Label styleClass="card-title" text="Extração de Texto" />
+                        <Label styleClass="pipeline-sub" text="Apache Tika lê o PDF e converte para texto puro" />
+                    </VBox>
+                    <Region HBox.hgrow="ALWAYS" />
+                    <Label fx:id="lblEtapa1Status" styleClass="status-badge" text="" />
+                    <Button fx:id="btnExtrair" onAction="#onTestarExtracao"
+                            styleClass="btn-primary" text="▶  Testar extração"
+                            disable="true" />
+                </HBox>
+
+                <!-- Resultado da extração -->
+                <VBox fx:id="resultadoExtracao" style="-fx-padding: 0 16 16 16;" spacing="8">
+                    <HBox alignment="CENTER_LEFT" spacing="10">
+                        <Label styleClass="pipeline-field-label" text="TEXTO EXTRAÍDO" />
+                        <Region HBox.hgrow="ALWAYS" />
+                        <Label fx:id="lblCharCount" styleClass="pipeline-meta" text="" />
+                        <Button onAction="#onCopiarTexto" styleClass="btn-ghost-sm" text="Copiar" />
+                        <Button onAction="#onLimparTexto" styleClass="btn-ghost-sm" text="Limpar" />
+                    </HBox>
+                    <TextArea fx:id="textoExtraido"
+                              styleClass="pipeline-textarea"
+                              promptText="O texto extraído do PDF aparecerá aqui..."
+                              editable="true"
+                              wrapText="true"
+                              prefHeight="260" />
+                    <Label styleClass="pipeline-hint"
+                           text="💡 Você pode editar o texto acima antes de parsear." />
+                </VBox>
+            </VBox>
+
+            <!-- ══ ETAPA 2 — PARSER ══════════════════════════════════ -->
+            <VBox fx:id="panelEtapa2" styleClass="card pipeline-panel pipeline-panel-disabled">
+                <HBox alignment="CENTER_LEFT" spacing="10" styleClass="card-header">
+                    <Label styleClass="step-badge step-badge-gray" text="2" />
+                    <VBox spacing="2">
+                        <Label styleClass="card-title" text="Parser de Questões" />
+                        <Label styleClass="pipeline-sub" text="Identifica enunciados, alternativas, banca e ano no texto" />
+                    </VBox>
+                    <Region HBox.hgrow="ALWAYS" />
+                    <Label fx:id="lblEtapa2Status" styleClass="status-badge" text="" />
+                    <Button fx:id="btnParsear" onAction="#onTestarParser"
+                            styleClass="btn-primary" text="▶  Testar parser"
+                            disable="true" />
+                </HBox>
+
+                <!-- Resultado do parser -->
+                <VBox fx:id="resultadoParser" style="-fx-padding: 0 16 16 16;" spacing="8">
+
+                    <!-- Resumo -->
+                    <HBox fx:id="resumoParser" spacing="10" alignment="CENTER_LEFT"
+                          style="-fx-padding: 0 0 4 0;">
+                        <VBox styleClass="parser-stat">
+                            <Label styleClass="parser-stat-label" text="QUESTÕES" />
+                            <Label fx:id="statTotalQ" styleClass="parser-stat-value" text="0" />
+                        </VBox>
+                        <VBox styleClass="parser-stat">
+                            <Label styleClass="parser-stat-label" text="C/ ALTERNATIVAS" />
+                            <Label fx:id="statComAlts" styleClass="parser-stat-value" text="0" />
+                        </VBox>
+                        <VBox styleClass="parser-stat">
+                            <Label styleClass="parser-stat-label" text="CERTO/ERRADO" />
+                            <Label fx:id="statCE" styleClass="parser-stat-value" text="0" />
+                        </VBox>
+                        <VBox styleClass="parser-stat">
+                            <Label styleClass="parser-stat-label" text="BANCA DETECTADA" />
+                            <Label fx:id="statBanca" styleClass="parser-stat-value" text="—" />
+                        </VBox>
+                        <VBox styleClass="parser-stat">
+                            <Label styleClass="parser-stat-label" text="ANO DETECTADO" />
+                            <Label fx:id="statAno" styleClass="parser-stat-value" text="—" />
+                        </VBox>
+                    </HBox>
+
+                    <!-- Lista de questões parseadas -->
+                    <Label styleClass="pipeline-field-label" text="QUESTÕES IDENTIFICADAS" />
+                    <ScrollPane fitToWidth="true" prefHeight="340"
+                                styleClass="parser-scroll" hbarPolicy="NEVER">
+                        <VBox fx:id="listaQuestoesParser" spacing="8">
+                            <padding><Insets bottom="4" left="2" right="2" top="4" /></padding>
+                        </VBox>
+                    </ScrollPane>
+
+                </VBox>
+            </VBox>
+
+            <!-- ══ ETAPA 3 — SALVAR ══════════════════════════════════ -->
+            <VBox fx:id="panelEtapa3" styleClass="card pipeline-panel pipeline-panel-disabled">
+                <HBox alignment="CENTER_LEFT" spacing="10" styleClass="card-header">
+                    <Label styleClass="step-badge step-badge-gray" text="3" />
+                    <VBox spacing="2">
+                        <Label styleClass="card-title" text="Salvar no Banco" />
+                        <Label styleClass="pipeline-sub" text="Persiste as questões aprovadas no SQLite" />
+                    </VBox>
+                    <Region HBox.hgrow="ALWAYS" />
+                    <Label fx:id="lblEtapa3Status" styleClass="status-badge" text="" />
+                    <Button fx:id="btnSalvar" onAction="#onSalvarNoBanco"
+                            styleClass="btn-success" text="💾  Salvar no banco"
+                            disable="true" />
+                </HBox>
+
+                <!-- Confirmação antes de salvar -->
+                <VBox fx:id="confirmacaoSalvar" style="-fx-padding: 0 16 16 16;" spacing="10">
+                    <HBox styleClass="confirm-box" alignment="CENTER_LEFT" spacing="12">
+                        <Label styleClass="confirm-icon" text="⚠" />
+                        <VBox spacing="4" HBox.hgrow="ALWAYS">
+                            <Label styleClass="confirm-title"
+                                   fx:id="lblConfirmTitle"
+                                   text="Pronto para salvar 0 questões" />
+                            <Label styleClass="confirm-desc"
+                                   text="Revise as questões acima antes de confirmar. Esta ação é permanente." />
+                        </VBox>
+                    </HBox>
+
+                    <!-- Log de salvamento -->
+                    <VBox fx:id="logSalvamento" spacing="0" />
+
+                    <!-- Resultado final -->
+                    <HBox fx:id="resultadoFinal" alignment="CENTER" spacing="12"
+                          style="-fx-padding: 16 0 0 0;">
+                        <Label fx:id="lblResultadoFinal" styleClass="resultado-final" text="" />
+                    </HBox>
+                </VBox>
+            </VBox>
+
+        </VBox>
+    </ScrollPane>
+</VBox>
