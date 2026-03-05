@@ -1,6 +1,7 @@
 package dev.revisor.revisor.db;
 
 import java.io.BufferedReader;
+import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
 import java.sql.Connection;
@@ -27,19 +28,20 @@ public class DatabaseManager {
      */
     public static void init() {
         try {
-            java.io.File dir = new java.io.File(DB_DIR);
-            if (!dir.exists()) {
-                dir.mkdirs();
-            }
-
+            new java.io.File(DB_DIR).mkdirs();
             connection = DriverManager.getConnection(JDBC_URL);
-            executarSchema();
+            migrarSchema();
+            System.out.println("Banco em: " + connection.getMetaData().getURL());
         } catch (SQLException e) {
             throw new RuntimeException("Erro ao inicializar banco: " + e.getMessage(), e);
         }
     }
 
+
     private static void executarSchema() {
+        System.out.println("Carregando schema...");
+        InputStream sis = DatabaseManager.class.getResourceAsStream("/db/schema.sql");
+        System.out.println("InputStream: " + sis);
         try (var is = DatabaseManager.class.getResourceAsStream("/db/schema.sql")) {
             if (is == null) {
                 throw new RuntimeException("Schema não encontrado: /db/schema.sql");
@@ -53,13 +55,41 @@ public class DatabaseManager {
             try (Statement stmt = connection.createStatement()) {
                 for (String s : statements) {
                     String trimmed = s.trim();
-                    if (!trimmed.isEmpty() && !trimmed.startsWith("--")) {
+                    if (!trimmed.isEmpty()) {
                         stmt.execute(trimmed);
                     }
                 }
             }
         } catch (Exception e) {
             throw new RuntimeException("Erro ao executar schema: " + e.getMessage(), e);
+        }
+    }
+    private static final int SCHEMA_VERSION = 1; // incremente a cada mudança no schema
+
+    private static void migrarSchema() throws SQLException {
+        int versaoAtual;
+        try (var rs = connection.createStatement().executeQuery("PRAGMA user_version")) {
+            versaoAtual = rs.next() ? rs.getInt(1) : 0;
+        }
+
+        if (versaoAtual == 0) {
+            try {
+                connection.setAutoCommit(false);
+
+                executarSchema();
+
+                connection.createStatement()
+                        .execute("PRAGMA user_version = " + SCHEMA_VERSION);
+
+                connection.commit();
+                System.out.println("Schema migrado com sucesso.");
+
+            } catch (Exception e) {
+                connection.rollback();
+                throw e;
+            } finally {
+                connection.setAutoCommit(true);
+            }
         }
     }
 
@@ -84,6 +114,30 @@ public class DatabaseManager {
             } catch (SQLException e) {
                 // ignore
             }
+        }
+    }
+    public static void debugBanco() {
+        try {
+            DatabaseManager.init();
+            var conn = DatabaseManager.getConnection();
+
+            System.out.println("Arquivo existe: " +
+                    new java.io.File(DatabaseManager.getDbPath()).exists());
+
+            System.out.println("Tamanho (bytes): " +
+                    new java.io.File(DatabaseManager.getDbPath()).length());
+
+            var rs = conn.createStatement().executeQuery(
+                    "SELECT name FROM sqlite_master WHERE type='table'"
+            );
+
+            System.out.println("Tabelas encontradas:");
+            while (rs.next()) {
+                System.out.println("- " + rs.getString(1));
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 

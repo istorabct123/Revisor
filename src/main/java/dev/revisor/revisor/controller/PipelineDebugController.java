@@ -344,7 +344,7 @@ public class PipelineDebugController implements Initializable {
 
         new Thread(() -> {
             try {
-                int salvas = QuestaoParserService.salvarNoBanco(questoesParseadas);
+                int salvas = QuestaoParserService.salvarNoBanco(questoesParseadas, null);
 
                 Platform.runLater(() -> {
                     adicionarLogItem(logSalvamento,

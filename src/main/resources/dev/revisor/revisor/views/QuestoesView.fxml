@@ -18,15 +18,15 @@
         <Label styleClass="page-title" text="Questões" />
         <Region HBox.hgrow="ALWAYS" />
         <Label fx:id="lblTotalBanco" styleClass="badge-neutral" text="Banco: 0" />
-        <Label fx:id="lblContador" styleClass="badge-blue" text="Exibidas: 0" />
+        <Label fx:id="lblContador"   styleClass="badge-blue"    text="Exibidas: 0" />
         <Button onAction="#onNovaQuestao" styleClass="btn-primary" text="＋  Nova Questão" />
     </HBox>
 
     <ScrollPane fitToWidth="true" styleClass="content-scroll" VBox.vgrow="ALWAYS">
-        <VBox spacing="14" styleClass="content-area">
+        <VBox spacing="14" styleClass="content-area" fillWidth="true">
             <padding><Insets bottom="24" left="20" right="20" top="20" /></padding>
 
-            <!-- ── PAINEL DE FILTROS ─────────────────────────────────── -->
+            <!-- ── PAINEL DE FILTROS ───────────────────────────────────── -->
             <VBox styleClass="card filter-panel">
                 <HBox alignment="CENTER_LEFT" spacing="8" styleClass="card-header">
                     <Label styleClass="card-icon" text="🔍" />
@@ -36,7 +36,7 @@
                     <Button onAction="#onLimparFiltros" styleClass="btn-ghost-sm" text="✕  Limpar" />
                 </HBox>
 
-                <!-- Linha 1: busca textual + matéria + assunto -->
+                <!-- Linha 1: busca + matéria + assunto -->
                 <HBox spacing="10" style="-fx-padding: 0 16 10 16;">
                     <TextField fx:id="campoBusca"
                                promptText="🔍  Buscar no enunciado..."
@@ -52,7 +52,7 @@
                               prefWidth="180" />
                 </HBox>
 
-                <!-- Linha 2: banca + ano + tipo + dificuldade + salvas -->
+                <!-- Linha 2: banca + ano + tipo + salvas -->
                 <HBox spacing="10" style="-fx-padding: 0 16 14 16;">
                     <ComboBox fx:id="filtroBanca"
                               promptText="Banca"
@@ -84,14 +84,20 @@
             <!-- ── LISTA DE QUESTÕES ──────────────────────────────────── -->
             <VBox fx:id="listaQuestoes" spacing="10" />
 
+            <!-- ── PAGINAÇÃO ─────────────────────────────────────────── -->
+            <HBox fx:id="paginacaoBox" spacing="8" alignment="CENTER"
+                  style="-fx-padding: 8 0 8 0;" />
+
             <!-- Estado vazio -->
             <VBox fx:id="emptyState" alignment="CENTER" spacing="12"
-                  style="-fx-padding: 48 0 48 0;">
+                  style="-fx-padding: 48 0 48 0;" visible="false" managed="false">
                 <Label styleClass="empty-icon" text="📭" />
-                <Label fx:id="lblEmptyTitulo" styleClass="card-title" text="Nenhuma questão encontrada" />
+                <Label fx:id="lblEmptyTitulo" styleClass="card-title"
+                       text="Nenhuma questão encontrada" />
                 <Label fx:id="lblEmptyTexto" styleClass="empty-text" wrapText="true"
                        text="Tente ajustar os filtros ou importe um PDF com questões." />
-                <Button onAction="#onImportarPdf" styleClass="btn-primary" text="📂  Ir para Materiais" />
+                <Button onAction="#onImportarPdf" styleClass="btn-primary"
+                        text="📂  Ir para Materiais" />
             </VBox>
 
         </VBox>

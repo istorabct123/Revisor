@@ -15,11 +15,12 @@
       fx:controller="dev.revisor.revisor.controller.MateriaisViewController">
 
     <!-- TOPBAR -->
-    <HBox alignment="CENTER_LEFT" spacing="12" styleClass="topbar">
+    <HBox alignment="CENTER_LEFT" spacing="12" styleClass="topbar" VBox.vgrow="NEVER">
         <Label styleClass="page-title" text="Materiais" />
         <Region HBox.hgrow="ALWAYS" />
         <Label fx:id="lblTotalArquivos" styleClass="badge-neutral" text="0 arquivos" />
-        <Button onAction="#onImportPdf" styleClass="btn-primary" text="📂  Importar PDF" />
+        <Button onAction="#onImportPdf" styleClass="btn-ghost"    text="📂  Importar PDFs" />
+        <Button onAction="#onImportPdf" styleClass="btn-primary"  text="＋  Adicionar PDF(s)" />
     </HBox>
 
     <ScrollPane fitToWidth="true" styleClass="content-scroll" VBox.vgrow="ALWAYS">

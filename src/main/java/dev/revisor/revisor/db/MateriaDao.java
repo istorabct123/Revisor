@@ -6,10 +6,6 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * DAO para a tabela materia.
- * Exemplo de integração: use este padrão para outras entidades.
- */
 public class MateriaDao {
 
     public Materia inserir(String nome, String cor) throws SQLException {
@@ -22,6 +18,16 @@ public class MateriaDao {
                 int id = rs.next() ? rs.getInt(1) : -1;
                 return new Materia(id, nome, cor);
             }
+        }
+    }
+
+    public void atualizar(int id, String novoNome, String novaCor) throws SQLException {
+        String sql = "UPDATE materia SET nome = ?, cor = ? WHERE id = ?";
+        try (PreparedStatement ps = DatabaseManager.getConnection().prepareStatement(sql)) {
+            ps.setString(1, novoNome);
+            ps.setString(2, novaCor);
+            ps.setInt(3, id);
+            ps.executeUpdate();
         }
     }
 
@@ -41,4 +47,3 @@ public class MateriaDao {
         return lista;
     }
 }
-

@@ -7,17 +7,11 @@ import java.sql.*;
 import java.util.List;
 
 /**
- * Orquestra o pipeline completo:
- *   arquivo.texto_extraido  →  QuestaoParserService  →  tabelas questao + alternativa
+ * Orquestra o pipeline:
+ *   arquivo.caminho  →  PdfExtractorService  →  QuestaoParserService  →  banco
  *
- * <p>Exemplo de uso no controller:
- * <pre>
- *   // Ao importar um PDF:
- *   ArquivoParserService.processarArquivo(arquivo.getId());
- *
- *   // Para reprocessar todos os arquivos pendentes:
- *   int total = ArquivoParserService.processarPendentes();
- * </pre>
+ * Esta versão tem logging detalhado em System.out para facilitar diagnóstico.
+ * Todos os pontos de retorno antecipado são logados.
  */
 public class ArquivoParserService {
 
@@ -26,106 +20,136 @@ public class ArquivoParserService {
     // ══════════════════════════════════════════════════════════════════════
 
     /**
-     * Processa um único arquivo pelo seu ID.
-     * Se o texto ainda não foi extraído, extrai do PDF no disco e grava no banco.
-     * Em seguida parseia o texto e persiste as questões.
+     * Processa um único arquivo: extrai texto do PDF (se necessário), parseia
+     * e persiste as questões no banco.
      *
      * @param arquivoId ID da linha na tabela `arquivo`
-     * @return número de questões criadas
+     * @return número de questões criadas (0 se nenhuma encontrada)
      */
     public static int processarArquivo(int arquivoId) throws Exception {
+        System.out.println("\n══════════════════════════════════════════");
+        System.out.printf("▶ processarArquivo(%d)%n", arquivoId);
+
+        // ── Passo 1: buscar dados do arquivo ────────────────────────────
+        garantirColunas();
         DadosArquivo dados = buscarDados(arquivoId);
+
         if (dados == null) {
-            System.out.printf("⚠️  Arquivo %d não encontrado%n", arquivoId);
+            System.out.printf("⚠️  Arquivo %d não encontrado na tabela 'arquivo'%n", arquivoId);
             return 0;
         }
+        System.out.printf("📂 Arquivo: %s%n", dados.nomeOriginal);
+        System.out.printf("   caminho:        %s%n", dados.caminho);
+        System.out.printf("   materia_id:     %s%n", dados.materiaId);
+        System.out.printf("   texto_extraido: %s%n",
+            dados.textoExtraido == null ? "null" :
+            dados.textoExtraido.isBlank() ? "(vazio)" :
+            dados.textoExtraido.length() + " chars");
 
-        // Se ainda não tem texto extraído, extrair do PDF e salvar no banco
+        // ── Passo 2: extrair texto do PDF se ainda não extraído ──────────
         if (dados.textoExtraido == null || dados.textoExtraido.isBlank()) {
+            System.out.println("📄 Texto ainda não extraído — iniciando extração do PDF…");
+
             if (dados.caminho == null || dados.caminho.isBlank()) {
-                System.out.printf("⚠️  Arquivo %d sem caminho — ignorado%n", arquivoId);
+                System.out.println("❌ Caminho do arquivo está vazio no banco. Impossível extrair.");
                 return 0;
             }
+
             File file = new File(dados.caminho);
             if (!file.exists()) {
-                System.out.printf("⚠️  Arquivo não encontrado no disco: %s%n", dados.caminho);
+                System.out.printf("❌ Arquivo não encontrado no disco: %s%n", dados.caminho);
+                System.out.println("   Dica: o arquivo pode ter sido movido após a importação.");
                 return 0;
             }
-            System.out.printf("📄 Extraindo texto do PDF: %s%n", dados.nomeOriginal);
+
+            System.out.printf("   Tamanho no disco: %.1f KB%n", file.length() / 1024.0);
+
             String texto = PdfExtractorService.extractText(file);
+
             if (texto == null || texto.isBlank()) {
-                System.out.printf("⚠️  Nenhum texto extraído de %s%n", dados.nomeOriginal);
+                System.out.println("❌ PdfExtractorService retornou texto vazio.");
+                System.out.println("   Possível causa: PDF é uma imagem escaneada (sem texto embutido).");
                 return 0;
             }
+
+            System.out.printf("✅ Texto extraído: %d chars%n", texto.length());
+            System.out.printf("   Primeiros 200 chars: %s%n", texto.substring(0, Math.min(200, texto.length())).replace("\n", "↵"));
+
             atualizarTextoExtraido(arquivoId, texto);
             dados.textoExtraido = texto;
+        } else {
+            System.out.println("♻️  Usando texto já extraído do banco.");
         }
 
-        System.out.printf("🔍 Parseando arquivo %d (%s)…%n", arquivoId, dados.nomeOriginal);
-
+        // ── Passo 3: parsear ─────────────────────────────────────────────
+        System.out.println("🔍 Iniciando parser…");
         List<QuestaoParserService.QuestaoRaw> questoes =
                 QuestaoParserService.parsear(dados.textoExtraido, dados.materiaId);
 
-        System.out.printf("   ↳ %d questões identificadas%n", questoes.size());
+        System.out.printf("   Parser retornou %d questões%n", questoes.size());
 
-        int salvas = QuestaoParserService.salvarNoBanco(questoes);
+        if (questoes.isEmpty()) {
+            System.out.println("⚠️  Nenhuma questão encontrada pelo parser.");
+            System.out.println("   Dica: verifique se o PDF segue o formato: '1) (Banca Ano) Enunciado'");
+            // Ainda marca como processado (com 0) para não ficar em loop
+            marcarComoProcessado(arquivoId, 0);
+            return 0;
+        }
+
+        // Log das primeiras questões para diagnóstico
+        int logMax = Math.min(3, questoes.size());
+        for (int i = 0; i < logMax; i++) {
+            QuestaoParserService.QuestaoRaw q = questoes.get(i);
+            System.out.printf("   Q%d: banca=%s ano=%s assunto=%s alts=%d correta=%s%n",
+                i + 1, q.banca, q.ano, q.assunto,
+                q.alternativas.size(), q.alternativaCorreta);
+            System.out.printf("        enunciado: %s%n",
+                q.enunciado != null && q.enunciado.length() > 80
+                    ? q.enunciado.substring(0, 80) + "…" : q.enunciado);
+        }
+
+        // ── Passo 4: salvar no banco ─────────────────────────────────────
+        System.out.println("💾 Salvando no banco…");
+        int salvas = QuestaoParserService.salvarNoBanco(questoes, arquivoId);
         marcarComoProcessado(arquivoId, salvas);
 
-        System.out.printf("   ✅ %d questões salvas no banco%n", salvas);
+        System.out.printf("✅ %d questões salvas para arquivo %d (%s)%n",
+            salvas, arquivoId, dados.nomeOriginal);
+        System.out.println("══════════════════════════════════════════\n");
         return salvas;
     }
 
     /**
-     * Varre todos os arquivos ainda não processados (questoes_extraidas IS NULL)
-     * e executa o parser para cada um.
-     *
-     * @return total de questões inseridas
+     * Processa todos os arquivos pendentes (questoes_extraidas IS NULL ou = 0).
      */
     public static int processarPendentes() throws SQLException {
+        garantirColunas();
         String sql = """
             SELECT id FROM arquivo
             WHERE (questoes_extraidas IS NULL OR questoes_extraidas = 0)
             ORDER BY id
         """;
-
-        garantirColunaProcessado();
-
-        int totalSalvo = 0;
+        int total = 0;
         try (Statement st = DatabaseManager.getConnection().createStatement();
              ResultSet rs = st.executeQuery(sql)) {
-
             while (rs.next()) {
-                int arquivoId = rs.getInt("id");
-                try {
-                    totalSalvo += processarArquivo(arquivoId);
-                } catch (Exception e) {
-                    System.err.printf("❌ Erro ao processar arquivo %d: %s%n", arquivoId, e.getMessage());
+                int id = rs.getInt("id");
+                try { total += processarArquivo(id); }
+                catch (Exception e) {
+                    System.err.printf("❌ Erro no arquivo %d: %s%n", id, e.getMessage());
+                    e.printStackTrace();
                 }
             }
         }
-
-        System.out.printf("%n🎉 Pipeline concluído: %d questões no total%n", totalSalvo);
-        return totalSalvo;
-    }
-
-    /**
-     * Versão conveniente: recebe o texto já extraído diretamente (sem precisar
-     * que esteja no banco) — útil para prévia antes de salvar o arquivo.
-     *
-     * @param texto     texto bruto do PDF
-     * @param materiaId matéria alvo (pode ser null)
-     * @return lista de questões parseadas (não salvas ainda)
-     */
-    public static List<QuestaoParserService.QuestaoRaw> previsualizar(String texto, Integer materiaId) {
-        return QuestaoParserService.parsear(texto, materiaId);
+        System.out.printf("%n🎉 Pipeline concluído: %d questões no total%n", total);
+        return total;
     }
 
     // ══════════════════════════════════════════════════════════════════════
-    // AUXILIARES PRIVADOS
+    // PRIVADOS
     // ══════════════════════════════════════════════════════════════════════
 
     private static DadosArquivo buscarDados(int arquivoId) throws SQLException {
-        garantirColunaTextoExtraido();
         String sql = "SELECT materia_id, nome_original, texto_extraido, caminho FROM arquivo WHERE id = ?";
         try (PreparedStatement ps = DatabaseManager.getConnection().prepareStatement(sql)) {
             ps.setInt(1, arquivoId);
@@ -142,41 +166,38 @@ public class ArquivoParserService {
     }
 
     private static void atualizarTextoExtraido(int arquivoId, String texto) throws SQLException {
-        String sql = "UPDATE arquivo SET texto_extraido = ? WHERE id = ?";
-        try (PreparedStatement ps = DatabaseManager.getConnection().prepareStatement(sql)) {
+        try (PreparedStatement ps = DatabaseManager.getConnection().prepareStatement(
+                "UPDATE arquivo SET texto_extraido = ? WHERE id = ?")) {
             ps.setString(1, texto);
             ps.setInt(2, arquivoId);
             ps.executeUpdate();
         }
     }
 
-    private static void garantirColunaTextoExtraido() throws SQLException {
-        try (Statement st = DatabaseManager.getConnection().createStatement()) {
-            st.execute("ALTER TABLE arquivo ADD COLUMN texto_extraido TEXT");
-        } catch (SQLException ignored) {
-            // Coluna já existe
-        }
-    }
-
-    private static void marcarComoProcessado(int arquivoId, int questoesSalvas) throws SQLException {
-        garantirColunaProcessado();
-        String sql = "UPDATE arquivo SET questoes_extraidas = ? WHERE id = ?";
-        try (PreparedStatement ps = DatabaseManager.getConnection().prepareStatement(sql)) {
-            ps.setInt(1, questoesSalvas);
+    private static void marcarComoProcessado(int arquivoId, int qtd) throws SQLException {
+        try (PreparedStatement ps = DatabaseManager.getConnection().prepareStatement(
+                "UPDATE arquivo SET questoes_extraidas = ? WHERE id = ?")) {
+            ps.setInt(1, qtd);
             ps.setInt(2, arquivoId);
             ps.executeUpdate();
         }
     }
 
-    private static void garantirColunaProcessado() throws SQLException {
+    /**
+     * Garante que as colunas extras existem na tabela arquivo.
+     * Usa try/catch por coluna — se já existir, ignora o erro.
+     */
+    private static void garantirColunas() {
         try (Statement st = DatabaseManager.getConnection().createStatement()) {
-            st.execute("ALTER TABLE arquivo ADD COLUMN questoes_extraidas INTEGER DEFAULT NULL");
-        } catch (SQLException ignored) {
-            // Coluna já existe
+            try { st.execute("ALTER TABLE arquivo ADD COLUMN texto_extraido TEXT"); }
+            catch (SQLException ignored) {}
+            try { st.execute("ALTER TABLE arquivo ADD COLUMN questoes_extraidas INTEGER DEFAULT NULL"); }
+            catch (SQLException ignored) {}
+        } catch (SQLException e) {
+            System.err.println("⚠️  Erro ao garantir colunas: " + e.getMessage());
         }
     }
 
-    // ── DTO interno ────────────────────────────────────────────────────────
     private static class DadosArquivo {
         Integer materiaId;
         String  nomeOriginal;

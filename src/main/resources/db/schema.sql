@@ -19,7 +19,8 @@ CREATE TABLE IF NOT EXISTS arquivo (
     questoes_extraidas INTEGER,
     created_at TEXT DEFAULT (datetime('now', 'localtime')),
     FOREIGN KEY (materia_id) REFERENCES materia(id)
-    );
+);
+
 -- Questões
 CREATE TABLE IF NOT EXISTS questao (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -35,15 +36,18 @@ CREATE TABLE IF NOT EXISTS questao (
 );
 
 -- Alternativas de cada questão
+-- 'letra'   = A, B, C, D, E
+-- 'correta' = 1 se é a alternativa correta, 0 caso contrário
 CREATE TABLE IF NOT EXISTS alternativa (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     questao_id INTEGER NOT NULL,
-    indice INTEGER NOT NULL,
+    letra TEXT NOT NULL,
     texto TEXT NOT NULL,
+    correta INTEGER NOT NULL DEFAULT 0,
     FOREIGN KEY (questao_id) REFERENCES questao(id) ON DELETE CASCADE
 );
 
--- Respostas do usuário (histórico)
+-- Respostas do usuário (histórico de desempenho)
 CREATE TABLE IF NOT EXISTS resposta (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     questao_id INTEGER NOT NULL,
@@ -64,7 +68,7 @@ CREATE TABLE IF NOT EXISTS tarefa (
     FOREIGN KEY (materia_id) REFERENCES materia(id)
 );
 
--- Revisões programadas (questões favoritas para revisar)
+-- Revisões programadas
 CREATE TABLE IF NOT EXISTS revisao (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     questao_id INTEGER NOT NULL,

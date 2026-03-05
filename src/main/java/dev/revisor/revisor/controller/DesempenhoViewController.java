@@ -95,7 +95,7 @@ public class DesempenhoViewController implements Initializable {
         int total = 0, acertos = 0;
         try (Statement st = conn.createStatement();
              ResultSet rs = st.executeQuery(
-                "SELECT COUNT(*) total, SUM(acertou) acertos FROM resposta")) {
+                "SELECT COUNT(*) total, SUM(acertou) acertos FROM resposta r WHERE 1=1" + periodoFiltroSql())) {
             if (rs.next()) {
                 total   = rs.getInt("total");
                 acertos = rs.getInt("acertos");
@@ -108,7 +108,7 @@ public class DesempenhoViewController implements Initializable {
         // Hoje
         int hoje = 0;
         try (PreparedStatement ps = conn.prepareStatement(
-                "SELECT COUNT(*) FROM resposta WHERE date(respondido_em) = date('now')")) {
+                "SELECT COUNT(*) FROM resposta WHERE date(created_at) = date('now')")) {
             ResultSet rs = ps.executeQuery();
             if (rs.next()) hoje = rs.getInt(1);
         }
@@ -133,8 +133,8 @@ public class DesempenhoViewController implements Initializable {
         // Horas estudadas no mês
         int minutosMes = 0;
         try (PreparedStatement ps = conn.prepareStatement(
-                "SELECT COALESCE(SUM(minutos),0) FROM sessao_estudo " +
-                "WHERE strftime('%Y-%m', data) = strftime('%Y-%m', 'now')")) {
+                "SELECT COALESCE(SUM(duracao_segundos),0)/60 FROM sessao_estudo " +
+                "WHERE strftime('%Y-%m', inicio) = strftime('%Y-%m', 'now')")) {
             ResultSet rs = ps.executeQuery();
             if (rs.next()) minutosMes = rs.getInt(1);
         }
@@ -159,7 +159,7 @@ public class DesempenhoViewController implements Initializable {
     private int taxaPeriodo(Connection conn, int diasAtras, int diasAteHoje) throws SQLException {
         String sql = """
             SELECT COUNT(*) total, SUM(acertou) acertos FROM resposta
-            WHERE date(respondido_em) BETWEEN date('now', ? || ' days') AND date('now', ? || ' days')
+            WHERE date(created_at) BETWEEN date('now', ? || ' days') AND date('now', ? || ' days')
         """;
         try (PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setString(1, "-" + diasAtras);
@@ -181,7 +181,7 @@ public class DesempenhoViewController implements Initializable {
         for (int i = 0; i < 365; i++) {
             String d = dia.minusDays(i).toString();
             try (PreparedStatement ps = conn.prepareStatement(
-                    "SELECT COUNT(*) FROM resposta WHERE date(respondido_em) = ?")) {
+                    "SELECT COUNT(*) FROM resposta WHERE date(created_at) = ?")) {
                 ps.setString(1, d);
                 ResultSet rs = ps.executeQuery();
                 if (rs.next() && rs.getInt(1) > 0) streak++;
@@ -209,7 +209,7 @@ public class DesempenhoViewController implements Initializable {
         for (int i = 6; i >= 0; i--) {
             String d = LocalDate.now().minusDays(i).format(fmt);
             try (PreparedStatement ps = conn.prepareStatement(
-                    "SELECT COUNT(*) FROM resposta WHERE date(respondido_em) = ?")) {
+                    "SELECT COUNT(*) FROM resposta WHERE date(created_at) = ?")) {
                 ps.setString(1, d);
                 ResultSet rs = ps.executeQuery();
                 if (rs.next()) contagens[6 - i] = rs.getInt(1);
@@ -263,17 +263,14 @@ public class DesempenhoViewController implements Initializable {
     private void carregarDistribuicao() throws SQLException {
         distribuicaoBox.getChildren().clear();
 
-        String sql = """
-            SELECT m.nome, m.cor,
-                   COUNT(r.id)   AS total,
-                   SUM(r.acertou) AS acertos
-            FROM resposta r
-            JOIN questao q ON q.id = r.questao_id
-            JOIN materia m ON m.id = q.materia_id
-            GROUP BY m.id
-            ORDER BY total DESC
-            LIMIT 6
-        """;
+        String sql =
+            "SELECT m.nome, m.cor," +
+            " COUNT(r.id) AS total, SUM(r.acertou) AS acertos" +
+            " FROM resposta r" +
+            " JOIN questao q ON q.id = r.questao_id" +
+            " JOIN materia m ON m.id = q.materia_id" +
+            " WHERE 1=1" + periodoFiltroSql() +
+            " GROUP BY m.id ORDER BY total DESC LIMIT 6";
 
         try (Statement st = DatabaseManager.getConnection().createStatement();
              ResultSet rs = st.executeQuery(sql)) {
@@ -330,17 +327,15 @@ public class DesempenhoViewController implements Initializable {
     private void carregarTabelaMaterias() throws SQLException {
         tabelaMaterias.getChildren().clear();
 
-        String sql = """
-            SELECT m.nome, m.cor,
-                   COUNT(r.id)      AS total,
-                   SUM(r.acertou)   AS acertos,
-                   COUNT(r.id) - SUM(r.acertou) AS erros
-            FROM resposta r
-            JOIN questao q ON q.id = r.questao_id
-            JOIN materia m ON m.id = q.materia_id
-            GROUP BY m.id
-            ORDER BY total DESC
-        """;
+        String sql =
+            "SELECT m.nome, m.cor," +
+            " COUNT(r.id) AS total, SUM(r.acertou) AS acertos," +
+            " COUNT(r.id) - SUM(r.acertou) AS erros" +
+            " FROM resposta r" +
+            " JOIN questao q ON q.id = r.questao_id" +
+            " JOIN materia m ON m.id = q.materia_id" +
+            " WHERE 1=1" + periodoFiltroSql() +
+            " GROUP BY m.id ORDER BY total DESC";
 
         int count = 0;
         try (Statement st = DatabaseManager.getConnection().createStatement();
@@ -416,7 +411,7 @@ public class DesempenhoViewController implements Initializable {
         // Questões respondidas nesta semana
         int questoesSemana = 0;
         try (PreparedStatement ps = conn.prepareStatement(
-                "SELECT COUNT(*) FROM resposta WHERE date(respondido_em) >= date('now', 'weekday 0', '-7 days')")) {
+                "SELECT COUNT(*) FROM resposta WHERE date(created_at) >= date('now', 'weekday 0', '-7 days')")) {
             ResultSet rs = ps.executeQuery();
             if (rs.next()) questoesSemana = rs.getInt(1);
         }
@@ -424,7 +419,7 @@ public class DesempenhoViewController implements Initializable {
         // Horas esta semana
         int minutosSemana = 0;
         try (PreparedStatement ps = conn.prepareStatement(
-                "SELECT COALESCE(SUM(minutos),0) FROM sessao_estudo WHERE date(data) >= date('now', 'weekday 0', '-7 days')")) {
+                "SELECT COALESCE(SUM(duracao_segundos),0)/60 FROM sessao_estudo WHERE date(inicio) >= date('now', 'weekday 0', '-7 days')")) {
             ResultSet rs = ps.executeQuery();
             if (rs.next()) minutosSemana = rs.getInt(1);
         }
@@ -466,16 +461,13 @@ public class DesempenhoViewController implements Initializable {
     private void carregarHistorico() throws SQLException {
         historicoBox.getChildren().clear();
 
-        String sql = """
-            SELECT r.respondido_em, r.acertou,
-                   q.enunciado, q.banca, q.ano,
-                   m.nome AS materia
-            FROM resposta r
-            JOIN questao q ON q.id = r.questao_id
-            LEFT JOIN materia m ON m.id = q.materia_id
-            ORDER BY r.respondido_em DESC
-            LIMIT 8
-        """;
+        String sql =
+            "SELECT r.created_at, r.acertou, q.enunciado, q.banca, q.ano, m.nome AS materia" +
+            " FROM resposta r" +
+            " JOIN questao q ON q.id = r.questao_id" +
+            " LEFT JOIN materia m ON m.id = q.materia_id" +
+            " WHERE 1=1" + periodoFiltroSql() +
+            " ORDER BY r.created_at DESC LIMIT 8";
 
         int count = 0;
         try (Statement st = DatabaseManager.getConnection().createStatement();
@@ -486,7 +478,7 @@ public class DesempenhoViewController implements Initializable {
                 String enunciado = rs.getString("enunciado");
                 String banca     = rs.getString("banca");
                 String materia   = rs.getString("materia");
-                String quando    = rs.getString("respondido_em");
+                String quando    = rs.getString("created_at");
 
                 HBox row = new HBox(12);
                 row.getStyleClass().add("activity-item");
@@ -529,8 +521,21 @@ public class DesempenhoViewController implements Initializable {
     // ══════════════════════════════════════════════════════════════════════
 
     @FXML private void onTabGeral(MouseEvent e)   { setActiveTab(tabGeral);   recarregar(); }
-    @FXML private void onTabSemana(MouseEvent e)  { setActiveTab(tabSemana);  }
-    @FXML private void onTabMateria(MouseEvent e) { setActiveTab(tabMateria); }
+    @FXML private void onTabSemana(MouseEvent e)  { setActiveTab(tabSemana);  recarregar(); }
+    @FXML private void onTabMateria(MouseEvent e) { setActiveTab(tabMateria); recarregar(); }
+
+    /** Fragmento WHERE para filtrar resposta.created_at pelo período selecionado */
+    private String periodoFiltroSql() {
+        String p = filtroPeriodo.getValue();
+        if (p == null) p = "Últimos 30 dias";
+        return switch (p) {
+            case "Hoje"           -> " AND date(r.created_at) = date('now')";
+            case "Últimos 7 dias" -> " AND date(r.created_at) >= date('now', '-7 days')";
+            case "Este mês"       -> " AND strftime('%Y-%m', r.created_at) = strftime('%Y-%m', 'now')";
+            case "Todo o período" -> "";
+            default               -> " AND date(r.created_at) >= date('now', '-30 days')";
+        };
+    }
 
     private void setActiveTab(Label sel) {
         for (Label t : new Label[]{tabGeral, tabSemana, tabMateria}) {
